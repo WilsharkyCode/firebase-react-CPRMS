@@ -3,16 +3,31 @@
 .database-container{
     display: flex;
     align-items: center;
-    justify-content: center;
     flex-direction: column;
-    background-color: rgb(172, 172, 172);
+    background-color: rgb(181, 181, 181);
     height: 100vh;
+   
 
 }
 
+.top-nav{
+    padding: 0.5rem;
+    overflow: hidden;
+    width: 70rem;
+    display: flex;
+    align-items: baseline;
+    align-content: space-between;
+    column-gap: 20px;
+}
+
+.search-container{
+    margin: 0 3rem;
+}
+
 .basic-search-bar{
-    width: 50rem;
-    margin: 0.5rem;
+    margin-right: 10px;
+    width: 40rem;
+    
 }
 
 .display-container{
@@ -26,7 +41,7 @@
     display: flex;
     align-items: baseline;
     justify-content: space-between;
-    width: 60rem;
+    width: 70rem;
 }
 
 
@@ -46,25 +61,32 @@
 }
 
 .data-sheet-container{
-    display: grid   ;
-    grid-template-columns: auto auto auto auto auto auto ;
-    border: 2px solid rgb(192, 192, 192);
+    border: 2px solid rgb(101, 101, 225);
     border-radius: 3px;
-    width: 60rem;
+    width: 73rem;
+    display: flexbox;
+    align-items: center;
+    justify-content: center;
 }
 
-.table-header,.table-header-span2 {
+.table-header,.table-header-center{
     border-bottom: 1px solid black;
+    color: white;
     padding: 1rem;
     min-height: 3.5rem;
+    background-color: rgb(101, 101, 225);
+    cursor: default;
 }
 
-
-.data-item, .span-2{
-    padding: 0.5rem 2rem;
+.data-cell, .cell-center{
+    padding: 1rem;
+    min-height: 3.5rem;
+    border-bottom: 1px solid black;
+    cursor: default;
 }
-.span-2, .table-header-span2{
-    grid-column: span 2;
+
+.cell-center,.table-header-center{
+    text-align: center;
 }
 .options{
     background-color: rgb(224, 224, 224);
