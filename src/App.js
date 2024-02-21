@@ -3,6 +3,7 @@ import Database from "./pages/Database/database";
 import "./styles.css"
 import { Routes ,Route, Navigate } from "react-router-dom";
 import { AuthContext } from "./components/AuthContext";
+
 import { useContext } from 'react';
 import PatientRecordForm from "./pages/patientRecordForm";
 import 'bootstrap/dist/css/bootstrap.css';

@@ -2,11 +2,10 @@
 import { collection, getDocs } from "firebase/firestore"; 
 import { useState, useEffect, useContext, useCallback } from "react";
 import { db } from '../../config/firebase-config';
-import "./database.css"
-import { RecordContext } from '../../components/RecordContext';
+import "./database.css";
 import { AuthContext } from "../../components/AuthContext";
 import DataTable from '../../components/DataTable';
-import { useNavigate, Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 
 
@@ -14,11 +13,10 @@ import { useNavigate, Navigate } from 'react-router-dom';
 export default function Database() {
   const [data,setData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const {dispatch, patientUID} = useContext(RecordContext);
   const {dispatch:authDispatch} = useContext(AuthContext);
   const Nav = useNavigate();
   
-  console.log(patientUID)
+
 
     let list=[];
     //Run Once
@@ -41,12 +39,13 @@ export default function Database() {
          DataFetch();
     }, []);
 
-    const DispatchDebug = useCallback(() => {
+    //useCallback prevents function from auto dispatching
+    const SignOutDispatch = useCallback(() => {
       authDispatch({ type: "LOGOUT" });
-      console.log("dispatch Successful");
+      console.log("LogOut dispatch Successful");
     }, [authDispatch]);
 
-    
+
   return (
     <div className='database-container' >
       <div className='top-nav'>
@@ -59,7 +58,7 @@ export default function Database() {
           />
           <button className='search-btn' type='submit'>Search</button>
         </div>
-          <button className='flex-left' onClick={DispatchDebug}>Logout</button>
+          <button className='flex-left' onClick={SignOutDispatch}>Logout</button>
       </div>
 
       <div className='display-container'>
