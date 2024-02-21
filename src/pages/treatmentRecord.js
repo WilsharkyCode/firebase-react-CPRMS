@@ -1,6 +1,6 @@
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useCallback } from "react";
 import { RecordContext } from "../components/RecordContext";
-import { Navigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { doc, setDoc, collection, getDocs } from "firebase/firestore";
 import { db } from "../config/firebase-config";
 
@@ -8,6 +8,7 @@ export function TreatmentRecord(){
 
     const [data,setData] = useState([]);
     const {patientUID} = useContext(RecordContext);
+    const navigate = useNavigate();
     console.log(patientUID);
    
     let list=[];
@@ -33,7 +34,15 @@ export function TreatmentRecord(){
 
 
 
-
+    const {dispatch} = useContext(RecordContext);
+   
+  
+    const handleCloseRecord = useCallback((e,id) => {
+      e.preventDefault();
+      dispatch({ type: 'CLOSE_RECORD'});
+      console.log('dispatch success');
+      navigate("/");
+    }, [navigate, dispatch]);
 
 
     return(
@@ -53,6 +62,9 @@ export function TreatmentRecord(){
                 </div>
             ))}
 
+            <button onClick={handleCloseRecord}>
+                Close
+            </button>
         </>
         
     )

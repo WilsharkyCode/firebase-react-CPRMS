@@ -42,7 +42,7 @@ export default function DataTable({data}) {
               Open Treatment Record
             </button>
             <br/>
-            <button className='options'>View Additional Data</button>
+            <button className='options'>Delete</button>
           </td>
         </tr>
       ))}
