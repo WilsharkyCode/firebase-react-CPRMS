@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState, useCallback } from "react";
 import { RecordContext } from "../components/RecordContext";
 import { useNavigate } from "react-router-dom";
-import { doc, setDoc, collection, getDocs } from "firebase/firestore";
-import { db } from "../config/firebase-config";
+import { database } from "../config/firebase-config";
+import { onValue, ref } from "firebase/database";
 
 export function TreatmentRecord(){
 
@@ -11,27 +11,16 @@ export function TreatmentRecord(){
     const navigate = useNavigate();
     console.log(patientUID);
    
-    let list=[];
-    //Run Once
     useEffect(() => {
-        const DataFetch = async () =>{
-            try {
-                const querySnapshot = await getDocs(collection(db, "patients"));
-                querySnapshot.forEach((doc) => {
-                //input arr to list arr = firebaseDB doc
-                list.push({id:doc.id, ...doc.data()});
-                });
-                //init "list" arr to setdata
-                setData(list);
-                console.log(data);
-            } catch (error) {
-                console.log(error);
-            }
-        }
-         //run func
-         DataFetch();
-    }, []);
-
+        const itemsRef = ref(database, 'patients/');
+        onValue(itemsRef, (snapshot) => {
+          const data = snapshot.val();
+          const loadedItems = data ? Object.keys(data).map(key => ({ id: key, ...data[key] })) : [];
+    
+          //retrive loaded items from local
+          setData(loadedItems);
+        });
+      }, []);
 
 
     const {dispatch} = useContext(RecordContext);

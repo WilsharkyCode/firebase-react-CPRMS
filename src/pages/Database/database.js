@@ -1,11 +1,11 @@
 
-import { collection, getDocs } from "firebase/firestore"; 
 import { useState, useEffect, useContext, useCallback } from "react";
-import { db } from '../../config/firebase-config';
 import "./database.css";
 import { AuthContext } from "../../components/AuthContext";
 import DataTable from '../../components/DataTable';
 import { useNavigate } from 'react-router-dom';
+import { database } from "../../config/firebase-config";
+import { ref, onValue } from "firebase/database";
 
 
 
@@ -14,30 +14,24 @@ export default function Database() {
   const [data,setData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const {dispatch:authDispatch} = useContext(AuthContext);
+
   const Nav = useNavigate();
   
+  const keys = ["firstName","lastName"];
 
-
-    let list=[];
+    
     //Run Once
     useEffect(() => {
-        const DataFetch = async () =>{
-            try {
-                const querySnapshot = await getDocs(collection(db, "patients"));
-                querySnapshot.forEach((doc) => {
-                //input arr to list arr = firebaseDB doc
-                list.push({id:doc.id, ...doc.data()});
-                });
-                //init "list" arr to setdata
-                setData(list);
-                console.log(data);
-            } catch (error) {
-                console.log(error);
-            }
-        }
-         //run func
-         DataFetch();
+      const itemsRef = ref(database, 'patients/');
+      onValue(itemsRef, (snapshot) => {
+        const data = snapshot.val();
+        const loadedItems = data ? Object.keys(data).map(key => ({ id: key, ...data[key] })) : [];
+  
+        //retrive loaded items from local
+        setData(loadedItems);
+      });
     }, []);
+  
 
     //useCallback prevents function from auto dispatching
     const SignOutDispatch = useCallback(() => {
@@ -45,19 +39,28 @@ export default function Database() {
       console.log("LogOut dispatch Successful");
     }, [authDispatch]);
 
+    //handles search query on data from database
+    const handleSearchQuery = (data) =>{
+      return data?.filter((patient) => 
+        keys.some((key) => patient[key].toLocaleLowerCase().includes(searchQuery))
+      )
+    };
+
 
   return (
     <div className='database-container' >
       <div className='top-nav'>
         <h5>Aldana Dental Clinic</h5>
-        <div className='search-container'>
+
+        <form className='search-container'>
           <input type='text' 
           placeholder='Search Name' 
           className='basic-search-bar'
           onChange={(e) => setSearchQuery(e.target.value)}
           />
-          <button className='search-btn' type='submit'>Search</button>
-        </div>
+          {/*<button className='search-btn' type="submit" disabled>Search</button>*/}
+          
+        </form>
           <button className='flex-left' onClick={SignOutDispatch}>Logout</button>
       </div>
 
@@ -70,36 +73,9 @@ export default function Database() {
           </button>
           </div>
           
-          <DataTable data={data}/>
-          {/* 
-          <div className='data-sheet-container'>
-            <b className='table-header-span2'>Patient ID</b>
-            <b className='table-header'>Name:</b>
-            <b className='table-header'>Last Name:</b>
-            <b className='table-header'>Middle Initial</b>
-            <div className='table-header'>Actions:</div>
-
-            {data.filter((lists) =>
-            lists.firstName.toLowerCase().includes(searchQuery)
-            ).map((lists) => (
-              <div key={lists.id}>
-                <div className='span-2' >{lists.id}</div>
-                <div className='data-item'>{lists.lastName}</div>
-                <div className='data-item'>{lists.lastName}</div>
-                <div className='data-item'>{lists.middleInitial}</div>
-
-                <div className='option-container'>
-                  <button className='options' 
-                  onClick={() => dispatch({type:"OPEN_RECORD", payload: lists.id})}>
-                    Open Treatment Record
-                  </button>
-                  <br/>
-                  <button className='options'>View Additional Data</button>
-                </div>
-
-              </div>))}
-          </div>
-            */}
+          {/*Sends data from firebase and setSearchQuery*/}
+          <DataTable data={handleSearchQuery(data)}/>
+     
         </div>
 
       

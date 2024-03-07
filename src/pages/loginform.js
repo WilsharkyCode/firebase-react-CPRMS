@@ -15,6 +15,11 @@ export default function LoginForm() {
   const {dispatch} = useContext(AuthContext);
   const navigate = useNavigate();
 
+
+
+
+
+  //handles login for email and password
   const handleLogin = (e) => {
     //prevents page from autorefreashing and erasing entered data
     e.preventDefault();

@@ -1,9 +1,7 @@
 import { useState } from "react";
-import * as BS from "react-bootstrap";
-import { collection, addDoc, Timestamp } from "firebase/firestore"; 
-import { db } from "../config/firebase-config";
 import { useNavigate } from "react-router-dom";
-
+import { database } from "../config/firebase-config";
+import { set, ref } from "firebase/database";
 
 export default function PatientRecordForm(){
     const [firstName,setFirstName] = useState("");
@@ -16,97 +14,90 @@ export default function PatientRecordForm(){
 
     const navigate = useNavigate();
 
-
-    const handleData = async (e) => {
-        e.preventDefault();
-
+    const addItems = () => {
         try {
-            const docRef = await addDoc(collection(db, "patients"), {
-              firstName,
-              lastName,
-              middleInitial,
-              birthday,
-              age,
-              phoneNum,
-              email,
+            const itemId = new Date().getTime().toString(); 
+            set(ref(database, 'patients/' + itemId), {
+                firstName,
+                lastName,
+                middleInitial,
+                birthday,
+                age,
+                phoneNum,
+                email,
             });
-        
-            console.log("Document written with ID: ", docRef.id);
-            navigate("/");
-        } catch (e) {
-            console.error("Error adding document: ", e);
+            navigate("/")   
+        } catch (error) {
+            console.error("Error adding document ");
         }
-
-    }
-
-
+        
+      };
 
 
-    //autocompute age = current year - birthday year
-    //if (currentMM-birthMM || currentDD - birthDD < 0){ age - 1};
 
-    //birthday notif
-    //if (currentMM == birthMM && currentDD == birthDD){alert birthday, emoji on name};
     return(
         <>
         <div className="record-container" >
-            <form onSubmit={handleData}>
-                <p>hello record</p>
-                    <BS.Row>
-                        <div class="col-xl-2 p-4">
-                            <label >First Name:</label>
-                            <input type="text" 
-                            onChange={e=>setFirstName(e.target.value)} 
-                            placeholder="First Name"
-                            required></input>
-                        </div>
-                        <div class="col-xl-2 p-4">
-                            <label >Last Name:</label>
-                            <input type="text" 
-                            onChange={e=>setLastName(e.target.value)} 
-                            placeholder="Last Name"
-                            required></input>
-                        </div>
-                        <div class="col-xl-2 p-4">
-                            <label >Middle Initial:</label>
-                            <input type="text" 
-                            onChange={e=>setMiddleInitial(e.target.value)} 
-                            placeholder="Middle Initial"
-                            required></input>
-                        </div>
-                        <div class="col-xl-2 p-4">
-                            <label >Age:</label><br/>
-                            <input type="number" 
-                            onChange={e=>setAge(e.target.value)} 
-                            placeholder="Age"></input>
-                        </div>
-                    </BS.Row>
-                    <BS.Row>
-                        <div class="col-xl-2 p-4">
-                            <label >Birthday:</label>
-                            <input type="date" 
-                            onChange={e=>setBirthday(e.target.value)} 
-                            placeholder="Birthday"></input>
-                        </div>
-                        <div class="col-xl-2 p-4">
-                            <label >Phone #:</label>
-                            <input type="number" 
-                            onChange={e=>setPhoneNum(e.target.value)} 
-                            placeholder="Phone Num."></input>
-                        </div>
-                        <div class="col-xl-2 p-4">
-                            <label >Email:</label>
-                            <input type="email" 
-                            onChange={e=>setEmail(e.target.value)} 
-                            placeholder="Email"></input>
-                        </div>
-                        <div class="col-xl-3 p-3">
-                            <p></p>
-                        </div>
-                    </BS.Row>
-                    
-                        
-                    <BS.Button type="submit">Create Patient</BS.Button>
+            <form onSubmit={addItems}>
+                <h3>Enter Patient Data</h3>
+                <table>
+                    <tr>
+                        <td><label>First Name:</label></td>
+                        <td><input 
+                        type="text" 
+                        onChange={e=>setFirstName(e.target.value)} 
+                        placeholder="First Name" required/>
+                        </td>
+                        <td><label>Last Name:</label></td>
+                        <td><input 
+                        type="text" 
+                        onChange={e=>setLastName(e.target.value)} 
+                        placeholder="Last Name" required/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label>Middle Initial:</label></td>
+                        <td><input 
+                        type="text" 
+                        onChange={e=>setMiddleInitial(e.target.value)} 
+                        placeholder="Middle Initial" required/>
+                        </td>
+                        <td><label>Age:</label></td>
+                        <td><input 
+                        type="number" 
+                        onChange={e=>setAge(e.target.value)} 
+                        placeholder="Age"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label>Birthday:</label></td>
+                        <td><input 
+                        type="date" 
+                        onChange={e=>setBirthday(e.target.value)} 
+                        placeholder="Birthday"/>
+                        </td>
+                        <td><label>Phone #:</label></td>
+                        <td><input 
+                        type="number" 
+                        onChange={e=>setPhoneNum(e.target.value)} 
+                        placeholder="Phone Num."/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><label>Email:</label></td>
+                        <td><input 
+                        type="email" 
+                        onChange={e=>setEmail(e.target.value)} 
+                        placeholder="Email"/>
+                        </td>
+                        <td colspan="2"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            <button type="submit">Create Patient</button>
+                        </td>
+                    </tr>
+                </table>
             </form>
         </div>
         

@@ -1,7 +1,7 @@
 
 
 .database-container{
-    display: flex;
+    display: flexbox;
     align-items: center;
     flex-direction: column;
     background-color: rgb(181, 181, 181);
@@ -60,6 +60,10 @@
     background-color: rgb(89, 89, 176);
 }
 
+.center-container{
+    
+}
+
 .data-sheet-container{
     border: 2px solid rgb(101, 101, 225);
     border-radius: 3px;
@@ -106,3 +110,4 @@
     border-bottom: 1px solid black;
     border-left: 1px solid black;
 }
+
