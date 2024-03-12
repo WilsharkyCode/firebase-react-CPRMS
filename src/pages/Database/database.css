@@ -110,4 +110,9 @@
     border-bottom: 1px solid black;
     border-left: 1px solid black;
 }
-
+.pagination{
+    display: flex ;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
