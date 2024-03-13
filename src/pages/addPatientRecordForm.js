@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { database } from "../config/firebase-config";
 import { set, ref } from "firebase/database";
+import BackBtn from "../components/backBtn";
 
 export default function PatientRecordForm(){
     const [firstName,setFirstName] = useState("");
@@ -98,7 +99,9 @@ export default function PatientRecordForm(){
                         </td>
                     </tr>
                 </table>
+                <BackBtn/>
             </form>
+            
         </div>
         
             

@@ -1,6 +1,8 @@
 import React, { useCallback, useContext, useState } from 'react'
 import { RecordContext } from './RecordContext';
 import { useNavigate } from 'react-router-dom';
+import { ref, remove } from 'firebase/database';
+import { database } from '../config/firebase-config';
 
 
 //Data table, Search query module
@@ -24,6 +26,11 @@ export default function DataTable({data}) {
     navigate("/treatment");
   }, [navigate, dispatch]);
 
+  //deletes Item form DB
+  const deleteRecords = useCallback((id) => {
+    remove(ref(database, 'patients/' + id));
+    console.log("Delete Success");
+  },[]);
     
 
   return (
@@ -52,7 +59,7 @@ export default function DataTable({data}) {
                   Open Treatment Record
                 </button>
                 <br/>
-                <button className='options'>Delete</button>
+                <button className='options' onClick={() => deleteRecords(patient.id)}>Delete</button>
               </td>
             </tr>
           ))}

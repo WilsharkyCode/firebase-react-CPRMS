@@ -5,7 +5,7 @@ import { Routes ,Route, Navigate } from "react-router-dom";
 import { AuthContext } from "./components/AuthContext";
 
 import { useContext } from 'react';
-import PatientRecordForm from "./pages/patientRecordForm";
+import AddPatientRecordForm from "./pages/addPatientRecordForm";
 import 'bootstrap/dist/css/bootstrap.css';
 import { TreatmentRecord } from "./pages/treatmentRecord";
 
@@ -37,7 +37,7 @@ function App() {
 
 
 
-
+  //React Routes and Protected Routes
   return (
     <div>
         <Routes>
@@ -51,7 +51,7 @@ function App() {
               }/>
               <Route path="/recordform" element={
                 <AuthCheck>
-                  <PatientRecordForm/>
+                  <AddPatientRecordForm/>
                 </AuthCheck>
               }/>
                 <Route path="/treatment" element={
