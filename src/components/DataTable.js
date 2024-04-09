@@ -8,6 +8,8 @@ import { database } from '../config/firebase-config';
 //Data table, Search query module
 export default function DataTable({data}) {
   const [currentPage, setCurrentPage] = useState(1);
+  
+  const [transferData, setTransferData] = useState([]);
   const itemsPerPage = 10;
 
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -19,6 +21,7 @@ export default function DataTable({data}) {
   const navigate = useNavigate();
 
   //Func to Open Treatment record and dispatch UIDs
+  //the preventDefault prevents the page from refreshing
   const patientUIDDispatch = useCallback((e,id) => {
     e.preventDefault();
     dispatch({ type: 'OPEN_RECORD', payload: id });
@@ -26,12 +29,28 @@ export default function DataTable({data}) {
     navigate("/treatment");
   }, [navigate, dispatch]);
 
-  //deletes Item form DB
+  //deletes Item form DB, callback to not auto trigger the function
   const deleteRecords = useCallback((id) => {
     remove(ref(database, 'patients/' + id));
     console.log("Delete Success");
   },[]);
-    
+
+    //handles data transder 
+  const storeInCache = (patient) => {
+    if ('caches' in window) {
+      caches.open("PatientData").then(cache => {
+        cache.put("PatientData", new Response(patient));
+      });
+    }
+  };
+   //Targeting system for patientData to edit and nav
+  const startEditing = useCallback((patient) => {
+    storeInCache(patient);
+    console.log('Caching success');
+    navigate("/editrecordform");
+  }, [navigate, storeInCache]);
+     
+
 
   return (
     <div className='center-container'>
@@ -59,6 +78,7 @@ export default function DataTable({data}) {
                   Open Treatment Record
                 </button>
                 <br/>
+                <button className='options' onClick={() => startEditing(patient)}>Edit</button>
                 <button className='options' onClick={() => deleteRecords(patient.id)}>Delete</button>
               </td>
             </tr>

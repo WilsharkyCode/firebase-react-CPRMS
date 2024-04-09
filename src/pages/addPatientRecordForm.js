@@ -4,6 +4,7 @@ import { database } from "../config/firebase-config";
 import { set, ref } from "firebase/database";
 import BackBtn from "../components/backBtn";
 
+//Input Patient Details
 export default function PatientRecordForm(){
     const [firstName,setFirstName] = useState("");
     const [lastName,setLastName] = useState("");
@@ -103,16 +104,7 @@ export default function PatientRecordForm(){
             </form>
             
         </div>
-        
-            
-            
-            
-            
-            
-           
-            
-            
-        
+
         </>
     )
 

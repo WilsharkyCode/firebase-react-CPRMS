@@ -17,9 +17,10 @@ export default function Database() {
 
   const Nav = useNavigate();
   
+  //to Filter
   const keys = ["firstName","lastName"];
 
-    
+    //Read
     //Run Once
     useEffect(() => {
       const itemsRef = ref(database, 'patients/');
@@ -32,7 +33,7 @@ export default function Database() {
       });
     }, []);
   
-
+    //logs out and 
     //useCallback prevents function from auto dispatching
     const SignOutDispatch = useCallback(() => {
       authDispatch({ type: "LOGOUT" });
@@ -45,6 +46,7 @@ export default function Database() {
         keys.some((key) => patient[key].toLocaleLowerCase().includes(searchQuery))
       )
     };
+
 
 
   return (

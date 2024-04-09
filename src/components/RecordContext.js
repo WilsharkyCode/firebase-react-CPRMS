@@ -1,11 +1,13 @@
 import { createContext, useReducer, useEffect } from "react"
 
 const INITIAL_ID ={
-    patientUID: JSON.parse(localStorage.getItem('patient') || null )
-}
+    patientUID: null,
+};
 
+//initializes Context
 export const RecordContext = createContext(INITIAL_ID);
 
+//Sets and Nullifies Patient UID
 const RecordReducer = (state, action) => {
     switch(action.type){
         case "OPEN_RECORD": {
@@ -20,13 +22,9 @@ const RecordReducer = (state, action) => {
     }
 };
 
+//LOGIC
 export const RecordContextProvider = ({children}) => {
     const [state, dispatch] = useReducer(RecordReducer, INITIAL_ID);
-
-    useEffect(() => {
-        localStorage.setItem('patient', JSON.stringify(state.patientUID));
-    },  [state.patientUID] );
-
 
 
     return(

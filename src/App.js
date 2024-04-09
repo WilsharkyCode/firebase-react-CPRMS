@@ -8,6 +8,7 @@ import { useContext } from 'react';
 import AddPatientRecordForm from "./pages/addPatientRecordForm";
 import 'bootstrap/dist/css/bootstrap.css';
 import { TreatmentRecord } from "./pages/treatmentRecord";
+import EditPatientRecordForm from "./pages/editPatientRecord";
 
 
 function App() {
@@ -54,11 +55,16 @@ function App() {
                   <AddPatientRecordForm/>
                 </AuthCheck>
               }/>
-                <Route path="/treatment" element={
-                  <AuthCheck>
-                    <TreatmentRecord/>
-                  </AuthCheck>
-                }/>
+              <Route path="/editrecordform" element={
+                <AuthCheck>
+                  <EditPatientRecordForm/>
+                </AuthCheck>
+              }/>
+              <Route path="/treatment" element={
+                <AuthCheck>
+                  <TreatmentRecord/>
+                </AuthCheck>
+              }/>
         </Routes>
     </div>
   );
