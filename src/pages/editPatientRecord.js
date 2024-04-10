@@ -1,5 +1,5 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { database } from "../config/firebase-config";
 import { set, ref } from "firebase/database";
@@ -7,6 +7,7 @@ import BackBtn from "../components/backBtn";
 
 //Input Patient Details
 export default function EditPatientRecordForm(){
+    const [data,setData] = useState([]);
     const [editingItem, setEditingItem] = useState({
         id: null, 
         firstName:"",
@@ -24,14 +25,15 @@ export default function EditPatientRecordForm(){
         //Retrieve data and post to useState
         //send editingPatient to values on the form and edit items
 
-
+    //Retrieves Cached ID
     useEffect(() => {
         if ('caches' in window) {
             caches.open("PatientData").then(cache => {
               cache.match("PatientData").then(response => {
                 if (response) {
-                  response.text().then(data => {
-                    console.log('Retrieved from cache:', data);
+                  response.text().then(id => {
+                    console.log('Retrieved from cache:', id);
+                    setData(id);
                   });
                 } else {
                   console.log('Nothing in cache');
@@ -41,9 +43,7 @@ export default function EditPatientRecordForm(){
           }
     }, []);
 
-    const retrieveFromCache = () => {
-       
-      };
+
 
 
     const editItems = () => {
@@ -57,7 +57,6 @@ export default function EditPatientRecordForm(){
                 phoneNum:editingItem.phoneNum,
                 email:editingItem.email,
               });
-              setEditingItem({ id: null, name: '' });
             navigate("/")   
         } catch (error) {
             console.error("Error adding document ");
@@ -77,6 +76,7 @@ export default function EditPatientRecordForm(){
                         <td><label>First Name:</label></td>
                         <td><input 
                         type="text" 
+                        
                         onChange={e => setEditingItem(prev => ({ ...prev, firstName: e.target.value }))} 
                         placeholder="First Name" required/>
                         </td>

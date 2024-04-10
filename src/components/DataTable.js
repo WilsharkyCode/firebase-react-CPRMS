@@ -25,6 +25,11 @@ export default function DataTable({data}) {
   const patientUIDDispatch = useCallback((e,id) => {
     e.preventDefault();
     dispatch({ type: 'OPEN_RECORD', payload: id });
+    caches.open("PatientUID").then(cache => {
+      cache.put("PatientUID", new Response(id));
+      console.log(id);
+    });
+  
     console.log('dispatch success');
     navigate("/treatment");
   }, [navigate, dispatch]);
@@ -36,16 +41,18 @@ export default function DataTable({data}) {
   },[]);
 
     //handles data transder 
-  const storeInCache = (patient) => {
+  const storeInCache = (id) => {
     if ('caches' in window) {
       caches.open("PatientData").then(cache => {
-        cache.put("PatientData", new Response(patient));
+        cache.put("PatientData", new Response(id));
+        console.log(id);
       });
     }
   };
    //Targeting system for patientData to edit and nav
-  const startEditing = useCallback((patient) => {
-    storeInCache(patient);
+  const startEditing = useCallback((e, id) => {
+    e.preventDefault();
+    storeInCache(id);
     console.log('Caching success');
     navigate("/editrecordform");
   }, [navigate, storeInCache]);
@@ -78,7 +85,7 @@ export default function DataTable({data}) {
                   Open Treatment Record
                 </button>
                 <br/>
-                <button className='options' onClick={() => startEditing(patient)}>Edit</button>
+                <button className='options' onClick={(e) => startEditing(e, patient.id)}>Edit</button>
                 <button className='options' onClick={() => deleteRecords(patient.id)}>Delete</button>
               </td>
             </tr>

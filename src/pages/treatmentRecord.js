@@ -10,23 +10,26 @@ export function TreatmentRecord(){
     const {patientUID} = useContext(RecordContext);
     const navigate = useNavigate();
     console.log(patientUID);
-   
+  
+    
+
     useEffect(() => {
         const itemsRef = ref(database, 'patients/');
         onValue(itemsRef, (snapshot) => {
           const data = snapshot.val();
+          console.log(snapshot.val())
           const loadedItems = data ? Object.keys(data).map(key => ({ id: key, ...data[key] })) : [];
     
           //retrive loaded items from local
           setData(loadedItems);
-        });
+      });
       }, []);
-
+   
 
     const {dispatch} = useContext(RecordContext);
-   
   
-    const handleCloseRecord = useCallback((e,id) => {
+  
+    const handleCloseRecord = useCallback((e) => {
       e.preventDefault();
       dispatch({ type: 'CLOSE_RECORD'});
       console.log('dispatch success');
