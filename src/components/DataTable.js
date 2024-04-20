@@ -98,6 +98,7 @@ export default function DataTable({data}) {
           ))}
         </tbody>
       </table>
+
       <div className="pagination">
         <button className='add-patient-btn' onClick={() => setCurrentPage(currentPage - 1)} disabled={currentPage === 1}>
           Previous
@@ -109,6 +110,7 @@ export default function DataTable({data}) {
           Next
         </button>
       </div>
+      
   </div>
   )
 }
