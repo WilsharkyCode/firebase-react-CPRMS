@@ -28,7 +28,7 @@ export default function Database() {
         const data = snapshot.val();
         const loadedItems = data ? Object.keys(data).map(key => ({ id: key, ...data[key] })) : [];
   
-        //retrive loaded items from local
+        //export loaded items from local func to main Func
         setData(loadedItems);
       });
     }, []);

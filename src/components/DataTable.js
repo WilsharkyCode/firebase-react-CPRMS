@@ -8,31 +8,34 @@ import { database } from '../config/firebase-config';
 //Data table, Search query module
 export default function DataTable({data}) {
   const [currentPage, setCurrentPage] = useState(1);
-  
-  const [transferData, setTransferData] = useState([]);
   const itemsPerPage = 10;
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
 
-
-
-  const {dispatch} = useContext(RecordContext);
   const navigate = useNavigate();
 
-  //Func to Open Treatment record and dispatch UIDs
-  //the preventDefault prevents the page from refreshing
-  const patientUIDDispatch = useCallback((e,id) => {
+  //Func to Open Treatment record and send patientData
+  //handles data transfer 
+  const cachepatientData = useCallback((patientData) => {
+    const parsedData = JSON.stringify(patientData);
+    if ('caches' in window) {
+      caches.open("TRPatientData").then(cache => {
+        cache.put("TRPatientData", new Response(parsedData));
+        console.log(parsedData);
+      });
+    }
+  },[]);
+    //Targeting system for patientData to edit and nav
+    //calls cachepatientData func
+  const getPatientDetails = useCallback((e, patientData) => {
     e.preventDefault();
-    dispatch({ type: 'OPEN_RECORD', payload: id });
-    caches.open("PatientUID").then(cache => {
-      cache.put("PatientUID", new Response(id));
-      console.log(id);
-    });
-  
-    console.log('dispatch success');
+    cachepatientData(patientData);
+    console.log('Caching success');
     navigate("/treatment");
-  }, [navigate, dispatch]);
+  }, [navigate, cachepatientData]);
+
+
 
   //deletes Item form DB, callback to not auto trigger the function
   const deleteRecords = useCallback((id) => {
@@ -40,19 +43,21 @@ export default function DataTable({data}) {
     console.log("Delete Success");
   },[]);
 
-    //handles data transder 
-  const storeInCache = (id) => {
+    //handles data transfer 
+  const storeInCache = useCallback((patientData) => {
+    const parsedData = JSON.stringify(patientData);
     if ('caches' in window) {
       caches.open("PatientData").then(cache => {
-        cache.put("PatientData", new Response(id));
-        console.log(id);
+        cache.put("PatientData", new Response(parsedData));
+        console.log(parsedData);
       });
     }
-  };
+  },[]);
    //Targeting system for patientData to edit and nav
-  const startEditing = useCallback((e, id) => {
+   //calls storeInCache func
+  const startEditing = useCallback((e, patientData) => {
     e.preventDefault();
-    storeInCache(id);
+    storeInCache(patientData);
     console.log('Caching success');
     navigate("/editrecordform");
   }, [navigate, storeInCache]);
@@ -79,13 +84,14 @@ export default function DataTable({data}) {
               <td className='data-cell' colspan="2">{patient.firstName}</td>
               <td className='data-cell'>{patient.lastName}</td>
               <td className='data-cell'>{patient.middleInitial}</td>
+
               <td className='option-container'>
-              <button  className='options'
-                onClick={(e) => patientUIDDispatch(e, patient.id)}>
-                  Open Treatment Record
+                <button  className='options'
+                  onClick={(e) => getPatientDetails(e, patient)}>
+                    Open Treatment Record
                 </button>
                 <br/>
-                <button className='options' onClick={(e) => startEditing(e, patient.id)}>Edit</button>
+                <button className='options' onClick={(e) => startEditing(e, patient)}>Edit</button>
                 <button className='options' onClick={() => deleteRecords(patient.id)}>Delete</button>
               </td>
             </tr>

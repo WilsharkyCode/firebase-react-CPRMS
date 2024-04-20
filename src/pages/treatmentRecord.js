@@ -5,11 +5,37 @@ import { database } from "../config/firebase-config";
 import { onValue, ref } from "firebase/database";
 
 export function TreatmentRecord(){
-
-    const [data,setData] = useState([]);
-    const {patientUID} = useContext(RecordContext);
+  const [data,setData] = useState([]);
+    const [patientData,setPatientData] = useState({
+      id: null, 
+      firstName:"",
+      lastName:"",
+      middleInitial:"",
+      birthday:"",
+      age:"",
+      phoneNum:"",
+      email:"",
+      });
     const navigate = useNavigate();
-    console.log(patientUID);
+    //Retrieves Cached ID and Post them to editingItem
+    useEffect(() => {
+      if ('caches' in window) {
+          caches.open("TRPatientData").then(cache => {
+            cache.match("TRPatientData").then(response => {
+              if (response) {
+                response.text().then(patientData => {
+                  const parsedData = JSON.parse(patientData)
+                  console.log('Retrieved from cache:', parsedData);
+                  setPatientData(parsedData);
+                });
+              } else {
+                console.log('Nothing in cache');
+              }
+            });
+          });
+        }
+  }, []);
+
   
     
 
@@ -31,8 +57,6 @@ export function TreatmentRecord(){
   
     const handleCloseRecord = useCallback((e) => {
       e.preventDefault();
-      dispatch({ type: 'CLOSE_RECORD'});
-      console.log('dispatch success');
       navigate("/");
     }, [navigate, dispatch]);
 
@@ -41,18 +65,13 @@ export function TreatmentRecord(){
         <>
             <p>Here's your record</p>
           
-            {data.filter((lists) =>
-            lists.id.includes(patientUID)
-            ).map((lists) => (
-              <div key={lists.id}>
-                <div >{lists.id}</div>
-                <div >{lists.firstName}</div>
-                <div >{lists.lastName}</div>
-                <div >{lists.middleInitial}</div>
-                <div >{lists.age}</div>
-                <div >{lists.birthday}</div>
-                </div>
-            ))}
+            
+                <div ><p>{patientData.id}</p></div>
+                <div >{patientData.firstName}</div>
+                <div >{patientData.lastName}</div>
+                <div >{patientData.middleInitial}</div>
+                <div >{patientData.age}</div>
+                <div >{patientData.birthday}</div>
 
             <button onClick={handleCloseRecord}>
                 Close
