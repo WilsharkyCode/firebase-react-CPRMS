@@ -1,9 +1,9 @@
 
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { database } from "../config/firebase-config";
+import { database } from "../../config/firebase-config";
 import { set, ref } from "firebase/database";
-import BackBtn from "../components/backBtn";
+import BackBtn from "../../components/backBtn";
 
 //Input Patient Details
 export default function EditPatientRecordForm(){

@@ -17,7 +17,7 @@ export default function Database() {
 
   const Nav = useNavigate();
   
-  //to Filter
+  //to Filter Keys
   const keys = ["firstName","lastName"];
 
     //Read

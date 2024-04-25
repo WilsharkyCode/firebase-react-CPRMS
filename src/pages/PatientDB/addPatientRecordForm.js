@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { database } from "../config/firebase-config";
-import { set, ref } from "firebase/database";
-import BackBtn from "../components/backBtn";
+import { database } from "../../config/firebase-config";
+import { set, ref, push } from "firebase/database";
+import BackBtn from "../../components/backBtn";
 
 //Input Patient Details
 export default function PatientRecordForm(){
@@ -28,6 +28,7 @@ export default function PatientRecordForm(){
                 phoneNum,
                 email,
             });
+
             navigate("/")   
         } catch (error) {
             console.error("Error adding document ");
@@ -102,10 +103,7 @@ export default function PatientRecordForm(){
                 </table>
                 <BackBtn/>
             </form>
-            
         </div>
-
         </>
     )
-
 }

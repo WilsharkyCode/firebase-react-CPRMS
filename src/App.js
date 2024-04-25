@@ -1,14 +1,15 @@
 import LoginForm from "./pages/loginform";
-import Database from "./pages/Database/database";
+import Database from "./pages/PatientDB/database";
 import "./styles.css"
 import { Routes ,Route, Navigate } from "react-router-dom";
 import { AuthContext } from "./components/AuthContext";
 
 import { useContext } from 'react';
-import AddPatientRecordForm from "./pages/addPatientRecordForm";
+import AddPatientRecordForm from "./pages/PatientDB/addPatientRecordForm";
 import 'bootstrap/dist/css/bootstrap.css';
-import { TreatmentRecord } from "./pages/treatmentRecord";
-import EditPatientRecordForm from "./pages/editPatientRecord";
+import { TreatmentRecord } from "./pages/TreatmentDB/treatmentRecord";
+import EditPatientRecordForm from "./pages/PatientDB/editPatientRecord";
+import AddTreatmentRecord from "./pages/TreatmentDB/addTreatmentrecord";
 
 
 function App() {
@@ -63,6 +64,11 @@ function App() {
               <Route path="/treatment" element={
                 <AuthCheck>
                   <TreatmentRecord/>
+                </AuthCheck>
+              }/>
+              <Route path="/addtreatmentrecord" element={
+                <AuthCheck>
+                  <AddTreatmentRecord/>  
                 </AuthCheck>
               }/>
         </Routes>

@@ -10,11 +10,11 @@ export const RecordContext = createContext(INITIAL_ID);
 //Sets and Nullifies Patient UID
 const RecordReducer = (state, action) => {
     switch(action.type){
-        case "OPEN_RECORD": {
+        case "ADD_RECORD": {
             return {patientUID: action.payload}
                 
         };
-        case "CLOSE_RECORD": {
+        case "RETURN_ID": {
             return {patientUID: null};
         };
         default:
