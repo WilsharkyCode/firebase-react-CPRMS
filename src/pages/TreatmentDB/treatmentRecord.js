@@ -9,19 +9,21 @@ export function TreatmentRecord(){
   //Copy from DataTable the logic for this
   const [data,setData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-    //For Cached JSON patientData struc
-    const [patientData,setPatientData] = useState({
-      id: null, 
-      firstName:"",
-      lastName:"",
-      middleInitial:"",
-      birthday:"",
-      age:"",
-      phoneNum:"",
-      email:"",
-      });
-    const navigate = useNavigate();
-    const {dispatch} = useContext(RecordContext);
+  //For Cached JSON patientData struc
+  const [patientData,setPatientData] = useState({
+    id: null, 
+    firstName:"",
+    lastName:"",
+    middleInitial:"",
+    birthday:"",
+    age:"",
+    phoneNum:"",
+    email:"",
+    });
+  const navigate = useNavigate();
+  const {dispatch} = useContext(RecordContext);
+
+
     //Retrieves Cached JSON patientData struc, parses it and posts them to editingItem
     useEffect(() => {
       if ('caches' in window) {
@@ -55,11 +57,9 @@ export function TreatmentRecord(){
       });
       }, []);
    
-
-  
-  
     const handleCloseRecord = useCallback((e) => {
       e.preventDefault();
+      dispatch({type:"RETURN_ID"});
       navigate("/");
     }, [navigate, dispatch]);
 
@@ -96,39 +96,36 @@ export function TreatmentRecord(){
                 onChange={(e) => setSearchQuery(e.target.value)}
                 />
                 {/*<button className='search-btn' type="submit" disabled>Search</button>*/}
-                
               </form>
             </div>
 
-      <div className='display-container'>
-        <div className='top-container'>
-          <h3>Treatment Record:</h3>
-          <button onClick={e => handleAddTR(e, patientData.id)} className='add-patient-btn'>
-              Add New Treatment Record
-          </button>
-        </div>
-          <p>Here's your record</p>
-                <div ><p>{patientData.id}</p></div>
-                <div >{patientData.firstName}</div>
-                <div >{patientData.lastName}</div>
-                <div >{patientData.middleInitial}</div>
-                <div >{patientData.age}</div>
-                <div >{patientData.birthday}</div>
-          {/*Sends data from firebase and setSearchQuery*/}
-          <TreatmentDTable data={handleSearchQuery(data)} patientid={patientData.id}/>
-     
-        </div>
-    </div>
+            <div className='display-container'>
+              <div className='top-container'>
+                <h3>Treatment Record:</h3>
+                <button onClick={e => handleAddTR(e, patientData.id)} className='add-patient-btn'>
+                    Add New Treatment Record
+                </button>
+                
 
+                {/*Tailwindcss this*/}
 
+              </div>
+                <p>Here's your record</p>
+                      <div ><p>{patientData.id}</p></div>
+                      <div >{patientData.firstName}</div>
+                      <div >{patientData.lastName}</div>
+                      <div >{patientData.middleInitial}</div>
+                      <div >{patientData.age}</div>
+                      <div >{patientData.birthday}</div>
+                {/*Sends data from firebase and setSearchQuery*/}
+                <TreatmentDTable data={handleSearchQuery(data)} patientid={patientData.id}/>
+          
+              </div>
+          </div>
 
-            
-            
-            
-
-            <button onClick={handleCloseRecord}>
-                Close
-            </button>
+                  <button onClick={handleCloseRecord}>
+                      Close
+                  </button>
         </>
         
     )

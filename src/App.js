@@ -10,6 +10,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import { TreatmentRecord } from "./pages/TreatmentDB/treatmentRecord";
 import EditPatientRecordForm from "./pages/PatientDB/editPatientRecord";
 import AddTreatmentRecord from "./pages/TreatmentDB/addTreatmentrecord";
+import EditTreatmentRecord from "./pages/TreatmentDB/editTreatmentRecord";
 
 
 function App() {
@@ -69,6 +70,11 @@ function App() {
               <Route path="/addtreatmentrecord" element={
                 <AuthCheck>
                   <AddTreatmentRecord/>  
+                </AuthCheck>
+              }/>
+              <Route path="/edittreatmentrecord" element={
+                <AuthCheck>
+                  <EditTreatmentRecord/>
                 </AuthCheck>
               }/>
         </Routes>

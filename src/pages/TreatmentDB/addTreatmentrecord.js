@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { database } from "../../config/firebase-config";
 import { set, ref, push } from "firebase/database";
@@ -33,6 +33,10 @@ export default function AddTreatmentRecord(){
         }
         
       };
+
+      const handleBackButton = useCallback (() => {
+        navigate('/treatment');
+    },[navigate]);
 
 
 
@@ -85,9 +89,13 @@ export default function AddTreatmentRecord(){
                     </tr>
                     
                     <tr>
-                        <td colspan="4">
+                        <td colspan="2">
                             <button type="submit">Create Treatment Record</button>
                         </td>
+                        <td>
+                        <button onClick={handleBackButton}>Back to Treatment Record Database</button>
+                        </td>
+                        
                     </tr>
                 </table>
             </form>

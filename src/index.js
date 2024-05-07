@@ -4,6 +4,7 @@ import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import { AuthContextProvider } from './components/AuthContext';
 import { RecordContextProvider } from './components/RecordContext';
+import './index.css';
 
 //removed react.strictmode cause it causes useEffect to fire twice
 

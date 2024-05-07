@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from 'react'
+import React, { useCallback,  useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { ref, remove } from 'firebase/database';
 import { database } from '../../config/firebase-config';
@@ -23,14 +23,14 @@ export default function TreatmentDTable({data, patientid}) {
     console.log("Delete Success");
   },[]);
 
-  /*
+ 
     //Cache Module for Editing 
     //handles data transfer 
-  const storeInCache = useCallback((patientData) => {
-    const parsedData = JSON.stringify(patientData);
+  const storeInCache = useCallback((TreatmentRecordData) => {
+    const parsedData = JSON.stringify(TreatmentRecordData);
     if ('caches' in window) {
-      caches.open("PatientData").then(cache => {
-        cache.put("PatientData", new Response(parsedData));
+      caches.open("TreatmentRecordData").then(cache => {
+        cache.put("TreatmentRecordData", new Response(parsedData));
         console.log(parsedData);
       });
     }
@@ -38,15 +38,15 @@ export default function TreatmentDTable({data, patientid}) {
   
    //Targeting system for patientData to edit and nav
    //calls storeInCache func
-  const startEditing = useCallback((e, patientData) => {
+  const startEditing = useCallback((e, treatmentRecords) => {
     e.preventDefault();
-    storeInCache(patientData);
+    storeInCache(treatmentRecords);
     console.log('Caching success');
-    navigate("/editrecordform");
+    navigate("/edittreatmentrecord");
   }, [navigate, storeInCache]);
      
 
-*/
+
   return (
     <div className='center-container'>
       <table className='data-sheet-container'>
@@ -61,15 +61,19 @@ export default function TreatmentDTable({data, patientid}) {
         </thead>
         <tbody>
           {/*data is renamed as patient and index is a number counter*/}
-        {data.filter((treatmentRecords) => 
-            treatmentRecords.patientID.includes(patientid)
-            )
-            .map((treatmentRecords) => (
+        {data.sort((a, b) => new Date(b.date) - new Date(a.date))
+          .filter((treatmentRecords) => 
+            treatmentRecords.patientID && treatmentRecords.patientID.includes(patientid)
+            ).slice(indexOfFirstItem, indexOfLastItem).map((treatmentRecords) => (
                 <tr key={treatmentRecords.id} >
-                <td className='cell-center'>{treatmentRecords.date}</td>
-                <td className='data-cell' colspan="3">{treatmentRecords.procedure}</td>
-                <td className='data-cell'>{treatmentRecords.amountPaid}</td>
-                <td className='data-cell'>{treatmentRecords.balance}</td>
+                  <td className='cell-center'>{treatmentRecords.date}</td>
+                  <td className='data-cell' colspan="3">{treatmentRecords.procedure}</td>
+                  <td className='data-cell'>{treatmentRecords.amountPaid}</td>
+                  <td className='data-cell'>{treatmentRecords.balance}</td>
+                  <td className='option-container'>
+                    <button className='options' onClick={(e) => startEditing(e, treatmentRecords)}>Edit</button>
+                    <button className='options' onClick={() => deleteRecords(treatmentRecords.id)}>Delete</button>
+                  </td>
                 </tr>
             ))
         }

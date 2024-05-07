@@ -1,0 +1,39 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .text-xxl {
+    @apply text-4xl;
+  }
+
+  .text-pastelpurple {
+    color: rgb(104, 104, 212);
+  }
+  .bg-pastelpurple {
+    background-color: rgb(104, 104, 212);
+  }
+  .icons-btn {
+    @apply rounded-full;
+    @apply drop-shadow-lg;
+    @apply p-2;
+    @apply m-1;
+  }
+  .add-input {
+    border: 1rem;
+    @apply bg-slate-200;
+    @apply focus:bg-slate-300;
+    @apply rounded-sm;
+    @apply mx-2;
+    @apply p-1;
+  }
+  .text-btn {
+    @apply bg-pastelpurple;
+    @apply hover:bg-violet-800;
+    @apply text-white;
+    @apply rounded-sm;
+    @apply px-4;
+    @apply py-2;
+    @apply text-center;
+  }
+}

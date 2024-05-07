@@ -1,116 +1,109 @@
-
-
-.database-container{
-    display: flexbox;
-    align-items: center;
-    flex-direction: column;
-    background-color: rgb(181, 181, 181);
-    height: 100vh;
-   
-
+.database-container {
+  display: flexbox;
+  align-items: center;
+  flex-direction: column;
+  background-color: rgb(181, 181, 181);
+  height: 100vh;
 }
 
-.top-nav{
-    padding: 0.5rem;
-    overflow: hidden;
-    width: 70rem;
-    display: flex;
-    align-items: baseline;
-    align-content: space-between;
-    column-gap: 20px;
+.top-nav {
+  padding: 0.5rem;
+  overflow: hidden;
+  width: 70rem;
+  display: flex;
+  align-items: baseline;
+  align-content: space-between;
+  column-gap: 20px;
 }
 
-.search-container{
-    margin: 0 3rem;
+.search-container {
+  margin: 0 3rem;
 }
 
-.basic-search-bar{
-    margin-right: 10px;
-    width: 40rem;
-    
+.basic-search-bar {
+  margin-right: 10px;
+  width: 40rem;
 }
 
-.display-container{
-    background-color: rgb(240, 240, 240);
-    padding: 20px;
-    border-radius: 4px;
-    box-shadow: 10px 10px 10px gray;
+.display-container {
+  background-color: rgb(240, 240, 240);
+  padding: 20px;
+  border-radius: 4px;
+  box-shadow: 10px 10px 10px gray;
 }
 
-.top-container{
-    display: flex;
-    align-items: baseline;
-    justify-content: space-between;
-    width: 70rem;
+.top-container {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  width: 70rem;
 }
 
-
-
-.add-patient-btn{
-    display: block;
-    text-align: center;
-    padding: 1px 10px;
-    border-radius: 10px;
-    border: 0px;
-    margin: 10px;
-    background-color: rgb(104, 104, 212);
-    color: white;
+.add-patient-btn {
+  display: block;
+  text-align: center;
+  padding: 1px 10px;
+  border-radius: 10px;
+  border: 0px;
+  margin: 10px;
+  background-color: rgb(104, 104, 212);
+  color: white;
 }
-.add-patient-btn:hover{
-    background-color: rgb(89, 89, 176);
+.add-patient-btn:hover {
+  background-color: rgb(89, 89, 176);
 }
 
-
-
-.data-sheet-container{
-    border: 2px solid rgb(101, 101, 225);
-    border-radius: 3px;
-    width: 73rem;
-    display: flexbox;
-    align-items: center;
-    justify-content: center;
+.data-sheet-container {
+  border: 2px solid rgb(101, 101, 225);
+  border-radius: 3px;
+  width: 73rem;
+  display: flexbox;
+  align-items: center;
+  justify-content: center;
 }
 
-.table-header,.table-header-center{
-    border-bottom: 1px solid black;
-    color: white;
-    padding: 1rem;
-    min-height: 3.5rem;
-    background-color: rgb(101, 101, 225);
-    cursor: default;
+.table-header,
+.table-header-center {
+  border-bottom: 1px solid black;
+  color: white;
+  padding: 1rem;
+  min-height: 3.5rem;
+  background-color: rgb(101, 101, 225);
+  cursor: default;
 }
 
-.data-cell, .cell-center{
-    padding: 1rem;
-    min-height: 3.5rem;
-    border-bottom: 1px solid black;
-    cursor: default;
+.data-cell,
+.cell-center {
+  padding: 1rem;
+  height: fit-content;
+  border-bottom: 1px solid rgb(176, 176, 176);
+  cursor: default;
 }
 
-.cell-center,.table-header-center{
-    text-align: center;
+.cell-center,
+.table-header-center {
+  text-align: center;
 }
-.options{
-    background-color: rgb(224, 224, 224);
-    border: 1px solid black;
-    margin: 0.2rem;
-    border-radius: 3px;
-    font-size: 12px;
-}
-
-.options:hover{
-    background-color: rgb(184, 184, 184);
+.options {
+  background-color: rgb(224, 224, 224);
+  border: 1px solid black;
+  margin: 0.2rem;
+  border-radius: 3px;
+  font-size: 12px;
 }
 
-
-.option-container{
-    padding: 0.2rem;
-    border-bottom: 1px solid black;
-    border-left: 1px solid black;
+.options:hover {
+  background-color: rgb(184, 184, 184);
 }
-.pagination{
-    display: flex ;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
+
+.option-container {
+  padding: 0.2rem;
+  border-bottom: 1px solid black;
+  border-left: 1px solid black;
+}
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
