@@ -76,11 +76,14 @@ export default function Database() {
       {/*Header Container End*/}
 
       <div className="p-8 bg-slate-100">
-        <div className="flex justify-between">
-          <h3 className="h4 text-pastelpurple">PATIENT DIRECTORY:</h3>
+        <div>
+          <h3 className="h4 float-left text-pastelpurple">
+            PATIENT DIRECTORY:
+          </h3>
           <button
             onClick={() => Nav("/recordform")}
-            className="bg-pastelpurple hover:bg-violet-800 text-white rounded-sm px-4 py-2 text-center m-2"
+            className=" float-right mb-4 mt-0
+            bg-pastelpurple hover:bg-violet-800 text-white rounded-sm px-4 py-2 text-center m-2"
           >
             ADD NEW PATIENT
           </button>

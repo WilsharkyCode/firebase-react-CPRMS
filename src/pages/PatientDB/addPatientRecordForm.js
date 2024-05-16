@@ -1,9 +1,10 @@
-import { useState, useContext, useCallback } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { database } from "../../config/firebase-config";
-import { set, ref, push } from "firebase/database";
+import { set, ref } from "firebase/database";
 import BackBtn from "../../components/backBtn";
 import { AuthContext } from "../../components/AuthContext";
+import CustomHeader from "../../components/CustomHeader";
 
 //Input Patient Details
 export default function PatientRecordForm() {
@@ -14,7 +15,6 @@ export default function PatientRecordForm() {
   const [phoneNum, setPhoneNum] = useState(0);
   const [email, setEmail] = useState("");
   const [age, setAge] = useState(0);
-  const { dispatch: authDispatch } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
@@ -37,32 +37,10 @@ export default function PatientRecordForm() {
     }
   };
 
-  const SignOutDispatch = useCallback(() => {
-    authDispatch({ type: "LOGOUT" });
-    console.log("LogOut dispatch Successful");
-  }, [authDispatch]);
-
   return (
     <>
-      {/*Header Container Start*/}
-      <div className=" flex justify-center bg-slate-100 drop-shadow-md ">
-        <div className="bg-slate-100 flex items-baseline p-2">
-          <h5 class="h5 text-pastelpurple font-semibold mr-96">
-            ALADANA DENTAL CLINIC
-          </h5>
+      <CustomHeader />
 
-          <button className="bg-slate-50 hover:bg-slate-200 px-4 py-2 drop-shadow-md mr-2 rounded-sm ">
-            Birthdays
-          </button>
-          <button
-            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-            onClick={SignOutDispatch}
-          >
-            Logout
-          </button>
-        </div>
-      </div>
-      {/*Header Container End*/}
       <div className="record-container bg-slate-200 h-screen">
         <form className="bg-slate-100 drop-shadow-lg" onSubmit={addItems}>
           <h3 className="h3">Enter Patient Data</h3>
@@ -147,12 +125,15 @@ export default function PatientRecordForm() {
               </td>
             </tr>
           </table>
+
+          {/*Form Options*/}
           <div className="mt-4">
             <button className="text-btn float-right" type="submit">
               Create Patient
             </button>
             <BackBtn />
           </div>
+          {/*Form Options*/}
         </form>
       </div>
     </>
