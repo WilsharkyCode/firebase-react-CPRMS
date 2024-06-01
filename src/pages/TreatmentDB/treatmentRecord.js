@@ -99,7 +99,7 @@ export function TreatmentRecord() {
 
   return (
     <>
-      <div className="database-container">
+      <div className="bg-slate-100 h-dvh">
         {/*Header Container Start*/}
         <div className=" flex justify-center bg-slate-100 drop-shadow-md ">
           <div className="bg-slate-100 flex items-baseline p-2 ">
@@ -128,47 +128,61 @@ export function TreatmentRecord() {
         </div>
         {/*Header Container End*/}
 
-        <div className="display-container">
-          <div></div>
-          <div>
-            <button className="float-left" onClick={handleCloseRecord}>
+        <div className="page-container">
+          <div className="container">
+            <button
+              className="float-left bg-slate-200 p-2"
+              onClick={handleCloseRecord}
+            >
               Close
             </button>
-            <h3 className="h4  text-pastelpurple">TREATMENT RECORDS:</h3>
+          </div>
+          <br />
+          <br />
+
+          <div className="page-header-container">
+            <h3 className="h4  database-title">TREATMENT RECORDS:</h3>
             <button
               onClick={() => navigate("/recordform")}
-              className=" float-right mb-4 mt-0
-            bg-pastelpurple hover:bg-violet-800 text-white rounded-sm px-4 py-2 text-center m-2"
+              className=" open-add-form-btn"
             >
               ADD NEW RECORD
             </button>
           </div>
-          <br />
-          <br />
-          <br />
-          <div>
-            <b>PATIENT DETAILS:</b>
-            <p className="float-right">{patientData.id}</p>
-          </div>
-          <table>
-            <tr>
-              <td>
-                <div>{patientData.firstName}</div>
-              </td>
-              <td>
-                <div>{patientData.lastName}</div>
-              </td>
-              <td>
-                <div>{patientData.middleInitial}</div>
-              </td>
-              <td>
-                <div>{patientData.age}</div>
-              </td>
-            </tr>
-          </table>
 
-          <div>{patientData.email}</div>
-          <div>{patientData.birthday}</div>
+          <br />
+          <br />
+          <br />
+
+          <div className="container">
+            <div>
+              <b>PATIENT DETAILS:</b>
+              <p className="float-right">{patientData.id}</p>
+            </div>
+            <table className="">
+              <tr>
+                <td>
+                  <div>{patientData.firstName}</div>
+                </td>
+                <td>
+                  <div>{patientData.lastName}</div>
+                </td>
+                <td>
+                  <div>{patientData.middleInitial}</div>
+                </td>
+                <td>
+                  <div>{patientData.age}</div>
+                </td>
+                <td>
+                  <div>{patientData.email}</div>
+                </td>
+                <td>
+                  <div>{patientData.birthday}</div>
+                </td>
+              </tr>
+            </table>
+          </div>
+
           {/*Sends data from firebase and setSearchQuery*/}
           <TreatmentDTable
             data={handleSearchQuery(data)}

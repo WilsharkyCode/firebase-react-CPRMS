@@ -72,16 +72,12 @@ export default function DataTable({ data }) {
   );
 
   return (
-    <div className="center-container">
-      <table className="data-sheet-container">
+    <div className="container ">
+      <table className="table-format">
         <thead>
           <tr>
-            <th className="table-header-center" colspan="2">
-              PATIENT ID
-            </th>
-            <th className="table-header" colspan="2">
-              FIRST NAME
-            </th>
+            <th className="table-header-center">PATIENT ID</th>
+            <th className="table-header ">FIRST NAME</th>
             <th className="table-header">LAST NAME</th>
             <th className="table-header">MIDDLE INITIAL</th>
             <th className="table-header">ACTIONS</th>
@@ -91,17 +87,13 @@ export default function DataTable({ data }) {
           {/*data is renamed as patient and index is a number counter*/}
           {data.slice(indexOfFirstItem, indexOfLastItem).map((patient) => (
             <tr key={patient.id}>
-              <td className="cell-center" colspan="2">
-                {patient.id}
-              </td>
-              <td className="data-cell" colspan="2">
-                {patient.firstName}
-              </td>
+              <td className="data-cell-center">{patient.id}</td>
+              <td className="data-cell">{patient.firstName}</td>
               <td className="data-cell">{patient.lastName}</td>
               <td className="data-cell">{patient.middleInitial}</td>
 
               {/*Actions*/}
-              <td className="flex align-baseline border border-1 py-3">
+              <td className="action-cell">
                 <button
                   className="icons-btn border bg-slate-50 hover:bg-slate-400"
                   onClick={(e) => getPatientDetails(e, patient)}

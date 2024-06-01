@@ -46,7 +46,7 @@ export default function Database() {
   };
 
   return (
-    <div className="database-container">
+    <div className="bg-slate-100 h-dvh">
       {/*Header Container Start*/}
       <div className=" flex justify-center bg-slate-100 drop-shadow-md ">
         <div className="bg-slate-100 flex items-baseline p-2 ">
@@ -75,22 +75,23 @@ export default function Database() {
       </div>
       {/*Header Container End*/}
 
-      <div className="p-8 bg-slate-100">
-        <div>
-          <h3 className="h4 float-left text-pastelpurple">
-            PATIENT DIRECTORY:
-          </h3>
+      <div className="page-container ">
+        <div className="page-header-container">
+          <h3 className="h4 database-title">PATIENT DIRECTORY:</h3>
           <button
             onClick={() => Nav("/recordform")}
-            className=" float-right mb-4 mt-0
-            bg-pastelpurple hover:bg-violet-800 text-white rounded-sm px-4 py-2 text-center m-2"
+            className="open-add-form-btn"
           >
             ADD NEW PATIENT
           </button>
         </div>
-
+        <br />
+        <br />
+        <br />
         {/*Sends data from firebase and setSearchQuery*/}
-        <DataTable data={handleSearchQuery(data)} />
+        <div>
+          <DataTable data={handleSearchQuery(data)} />
+        </div>
       </div>
     </div>
   );
