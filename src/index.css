@@ -16,6 +16,9 @@
   .icons-btn {
     @apply rounded-full;
     @apply drop-shadow-lg;
+    @apply transition;
+    transition-duration: 300ms;
+    @apply ease-in-out;
     @apply p-2;
     @apply m-1;
   }
@@ -86,6 +89,7 @@
   .page-header-container {
     @apply container;
     @apply mx-auto;
+    width: 80rem;
     padding: auto;
   }
   .database-title {
@@ -101,5 +105,23 @@
     min-height: 3.5rem;
     background-color: rgb(101, 101, 225);
     cursor: default;
+  }
+  .patient-details-container-lg {
+    min-width: 68rem;
+  }
+  .patient-details-container-xl {
+    min-width: 75rem;
+  }
+  .patient-details-cell {
+    @apply mx-1;
+    @apply lg:w-40;
+    @apply xl:w-52;
+    @apply px-2;
+    @apply py-1;
+    @apply bg-slate-200;
+    @apply rounded-lg;
+    @apply float-right;
+    @apply text-clip;
+    @apply break-words;
   }
 }

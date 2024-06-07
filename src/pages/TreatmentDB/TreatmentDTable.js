@@ -4,6 +4,8 @@ import { ref, remove } from "firebase/database";
 import { database } from "../../config/firebase-config";
 import TrashIcon from "../../components/Icons/trash-icon-white.png";
 import EditIcon from "../../components/Icons/edit-icon-white.png";
+import BackIcon from "../../components/Icons/arrow-left-white.png";
+import ForwardIcon from "../../components/Icons/arrow-right-white.png";
 
 //Data table, Search query module
 export default function TreatmentDTable({ data, patientid }) {
@@ -104,25 +106,25 @@ export default function TreatmentDTable({ data, patientid }) {
         </tbody>
       </table>
 
-      <div className="pagination">
+      <div className="pagination mt-3">
         <button
-          className="add-patient-btn"
+          className="icons-btn bg-pastelpurple hover:bg-violet-800"
           onClick={() => setCurrentPage(currentPage - 1)}
           disabled={currentPage === 1}
         >
-          Previous
+          <img src={BackIcon} alt="Back" width="24px" height="24px" />
         </button>
         <span>
           Page {currentPage} of {Math.ceil(filteredData.length / itemsPerPage)}
         </span>
         <button
-          className="add-patient-btn"
+          className="icons-btn bg-pastelpurple hover:bg-violet-800"
           onClick={() => setCurrentPage(currentPage + 1)}
           disabled={
             currentPage === Math.ceil(filteredData.length / itemsPerPage)
           }
         >
-          Next
+          <img src={ForwardIcon} alt="Back" width="24px" height="24px" />
         </button>
       </div>
     </div>

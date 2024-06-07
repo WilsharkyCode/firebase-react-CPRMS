@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { database } from "../../config/firebase-config";
 import { onValue, ref } from "firebase/database";
 import TreatmentDTable from "./TreatmentDTable";
+import BackIcon from "../../components/Icons/arrow-left-purple.png";
 
 export function TreatmentRecord() {
   //Copy from DataTable the logic for this
@@ -128,59 +129,90 @@ export function TreatmentRecord() {
         </div>
         {/*Header Container End*/}
 
-        <div className="page-container">
-          <div className="container">
+        <div className="page-container ">
+          <div className="page-header-container mb-8">
             <button
-              className="float-left bg-slate-200 p-2"
+              className="float-left bg-slate-50 p-2 rounded-md
+              transition duration-400 ease-in-out
+               hover:bg-slate-200 drop-shadow-sm text-pastelpurple
+              border-slate-200 border flex align-baseline"
               onClick={handleCloseRecord}
             >
-              Close
+              <img src={BackIcon} alt="Back" width="26px" height="26px" />
+              <b> PATIENT DIRECTORY</b>
             </button>
-          </div>
-          <br />
-          <br />
 
-          <div className="page-header-container">
+            <br />
+            <br />
+
             <h3 className="h4  database-title">TREATMENT RECORDS:</h3>
             <button
-              onClick={() => navigate("/recordform")}
+              onClick={() => navigate("/addtreatmentrecord")}
               className=" open-add-form-btn"
             >
               ADD NEW RECORD
             </button>
           </div>
-
-          <br />
-          <br />
           <br />
 
-          <div className="container">
-            <div>
-              <b>PATIENT DETAILS:</b>
-              <p className="float-right">{patientData.id}</p>
+          <div className=" container w-75 lg:w-48 flex justify-center ">
+            <div
+              className=" border drop-shadow-md block bg-slate-100 p-6 m-6 
+            lg:patient-details-container-lg xl:patient-details-container-xl"
+            >
+              <div>
+                <b>PATIENT DETAILS:</b>
+                <p className="float-right">ID: {patientData.id}</p>
+              </div>
+
+              <table className="table-auto ">
+                <tr className="flex items-baseline p-1">
+                  <td className="w-80 " colSpan={2}>
+                    <b className="text-wrap">FIRST NAME:</b>
+                    <p className="patient-details-cell">
+                      {patientData.firstName}
+                    </p>
+                  </td>
+                  <td className="w-80 xl:w-96  " colSpan={2}>
+                    <b>MIDDLE NAME:</b>
+                    <p className="patient-details-cell">
+                      {patientData.middleInitial}
+                    </p>
+                  </td>
+                  <td className="flex items-baseline " colSpan={2}>
+                    <b>LAST NAME:</b>
+                    <p className="patient-details-cell">
+                      {patientData.lastName}
+                    </p>
+                  </td>
+                  <td className="flex items-baseline ">
+                    <b>AGE:</b>
+                    <p className="mx-1 min-w-12 px-2 py-1 bg-slate-200 rounded-lg ">
+                      {patientData.age}
+                    </p>
+                  </td>
+                </tr>
+
+                <tr className="flex items-baseline p-1">
+                  <td className="w-80 " colSpan={2}>
+                    <b>EMAIL:</b>
+                    <p className="patient-details-cell">{patientData.email}</p>
+                  </td>
+                  <td className="w-80 xl:w-96 " colSpan={2}>
+                    <b>BIRTHDAY:</b>
+                    <p className="patient-details-cell">
+                      {patientData.birthday}
+                    </p>
+                  </td>
+                  <td className="" colSpan={2}>
+                    <b>PHONE#: &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</b>
+                    <p className="patient-details-cell">
+                      {patientData.phoneNum}
+                    </p>
+                  </td>
+                </tr>
+              </table>
             </div>
-            <table className="">
-              <tr>
-                <td>
-                  <div>{patientData.firstName}</div>
-                </td>
-                <td>
-                  <div>{patientData.lastName}</div>
-                </td>
-                <td>
-                  <div>{patientData.middleInitial}</div>
-                </td>
-                <td>
-                  <div>{patientData.age}</div>
-                </td>
-                <td>
-                  <div>{patientData.email}</div>
-                </td>
-                <td>
-                  <div>{patientData.birthday}</div>
-                </td>
-              </tr>
-            </table>
           </div>
 
           {/*Sends data from firebase and setSearchQuery*/}
