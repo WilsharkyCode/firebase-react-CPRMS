@@ -3,103 +3,137 @@ import { useNavigate } from "react-router-dom";
 import { database } from "../../config/firebase-config";
 import { set, ref, push } from "firebase/database";
 import { RecordContext } from "../../components/RecordContext";
+import CustomHeader from "../../components/CustomHeader";
 
-export default function AddTreatmentRecord(){
-    const navigate = useNavigate();
-    const {patientUID} = useContext(RecordContext);
-    const [addItem,setAddItem] = useState({
-        date: "",
-        procedure: "",
-        amountPaid: 0,
-        balance: 0
-    });
+export default function AddTreatmentRecord() {
+  const navigate = useNavigate();
+  const { patientUID } = useContext(RecordContext);
+  const [addItem, setAddItem] = useState({
+    date: "",
+    procedure: "",
+    amountPaid: 0,
+    balance: 0,
+  });
 
+  //AutoGenerates ID then add
+  const addItems = () => {
+    try {
+      const TRRef = ref(database, "TreatmentRecords/"); //Directory
+      const NewTRRef = push(TRRef); //IDGenerator
+      set(NewTRRef, {
+        patientID: patientUID,
+        date: addItem.date,
+        procedure: addItem.procedure,
+        amountPaid: addItem.amountPaid,
+        balance: addItem.balance,
+      });
+      navigate("/treatment");
+    } catch (error) {
+      console.error("Error adding document ");
+    }
+  };
 
-    //AutoGenerates ID then add
-    const addItems = () => {
-        try {
-            const TRRef = ref(database, 'TreatmentRecords/'); //Directory
-            const NewTRRef = push(TRRef); //IDGenerator
-            set(NewTRRef,{
-                patientID: patientUID,
-                date: addItem.date,
-                procedure: addItem.procedure,
-                amountPaid: addItem.amountPaid,
-                balance: addItem.balance
-            });
-            navigate("/treatment");   
-        } catch (error) {
-            console.error("Error adding document ");
-        }
-        
-      };
+  const handleBackButton = useCallback(() => {
+    navigate("/treatment");
+  }, [navigate]);
 
-      const handleBackButton = useCallback (() => {
-        navigate('/treatment');
-    },[navigate]);
+  return (
+    <>
+      <CustomHeader />
+      <div className="record-container bg-slate-200 h-screen">
+        <form className="bg-slate-100 drop-shadow-lg" onSubmit={addItems}>
+          <h3 className="h3">Enter Treatment Record Data</h3>
+          <br />
+          <table>
+            <tr>
+              <td className="flex align-items-baseline ">
+                <label className="form-date-margin">Date:</label>
+                <input
+                  className="add-input min-w-96"
+                  type="date"
+                  onChange={(e) =>
+                    setAddItem((prev) => ({
+                      ...prev,
+                      date: e.target.value,
+                    }))
+                  }
+                  required
+                />
+              </td>
+            </tr>
+            <tr>
+              <td className="flex align-items-baseline ">
+                <label className="form-amount-margin text-nowrap">
+                  Amount Paid:
+                </label>
+                <input
+                  className="add-input min-w-96"
+                  type="number"
+                  onChange={(e) =>
+                    setAddItem((prev) => ({
+                      ...prev,
+                      amountPaid: e.target.value,
+                    }))
+                  }
+                  placeholder="Amount Paid"
+                  required
+                />
+              </td>
+            </tr>
 
+            <tr>
+              <td colSpan={2}>
+                <label>Remaining Balance:</label>
+                <input
+                  className="add-input min-w-96"
+                  type="number"
+                  onChange={(e) =>
+                    setAddItem((prev) => ({
+                      ...prev,
+                      balance: e.target.value,
+                    }))
+                  }
+                  placeholder="Balance"
+                  required
+                />
+              </td>
+            </tr>
 
+            <tr>
+              <td>
+                <label>Procedure:</label>
+                <textarea
+                  className="add-input resize-none "
+                  onChange={(e) =>
+                    setAddItem((prev) => ({
+                      ...prev,
+                      procedure: e.target.value,
+                    }))
+                  }
+                  placeholder="Procedure"
+                  rows="5"
+                  cols="70"
+                  required
+                />
+              </td>
+            </tr>
+          </table>
 
-    return(
-        <>
-        <div className="record-container" >
-            <form onSubmit={addItems}>
-                <h3>Enter Treatment Record Data</h3>
-                <table>
-                    
-                    <tr>
-                        <td><label>Date:</label></td>
-                        <td><input 
-                        type="date" 
-                        onChange={e=>setAddItem(prev => ({ 
-                            ...prev, date: e.target.value 
-                        }))} 
-                        placeholder="Date" 
-                        required/>
-                        </td>
-
-                        <td><label>Procedure:</label></td>
-                        <td>
-                        <textarea 
-                        onChange={e=>setAddItem(prev => ({ 
-                            ...prev, procedure: e.target.value 
-                        }))} 
-                        placeholder="Procedure"  
-                        rows="4" cols="50" 
-                        required/>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td><label>Amount Paid:</label></td>
-                        <td><input 
-                        type="number" 
-                        onChange={e=>setAddItem(prev => ({ 
-                            ...prev, amountPaid: e.target.value 
-                        }))} 
-                        placeholder="Amount Paid" required/>
-                        </td>
-                        <td><label>Balance:</label></td>
-                        <td><input 
-                        type="number" 
-                        onChange={e=>setAddItem(prev => ({ 
-                            ...prev, balance: e.target.value 
-                        }))} 
-                        placeholder="Balance" required/> 
-                        </td>
-                    </tr>
-                    
-                    <tr>
-                        <td colspan="2">
-                            <button type="submit">Create Treatment Record</button>
-                        </td>
-                        <td>
-                        <button onClick={handleBackButton}>Back to Treatment Record Database</button>
-                        </td>
-                        
-                    </tr>
-                </table>
-            </form>
-        </div>
-        </>
-    )
-};
+          {/*Form Options*/}
+          <div className="mt-4">
+            <button className="text-btn float-right" type="submit">
+              Create Record
+            </button>
+            <button
+              className="bg-slate-100 hover:bg-slate-400 text-slate-500 hover:text-white 
+            rounded-sm px-4 py-2 text-center drop-shadow-md border-gray-300 border-1"
+              onClick={handleBackButton}
+            >
+              Back to Treatment Record Database
+            </button>
+          </div>
+        </form>
+      </div>
+    </>
+  );
+}

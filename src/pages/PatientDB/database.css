@@ -62,23 +62,6 @@
   justify-content: center;
 }
 
-.options {
-  background-color: rgb(224, 224, 224);
-  border: 1px solid black;
-  margin: 0.2rem;
-  border-radius: 3px;
-  font-size: 12px;
-}
-
-.options:hover {
-  background-color: rgb(184, 184, 184);
-}
-
-.option-container {
-  padding: 0.2rem;
-  border-bottom: 1px solid black;
-  border-left: 1px solid black;
-}
 .pagination {
   display: flex;
   align-items: center;

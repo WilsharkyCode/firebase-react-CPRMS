@@ -56,8 +56,11 @@
     @apply flex;
     @apply align-baseline;
     @apply border;
-    @apply border-slate-300;
-    @apply py-3;
+    @apply border-slate-200;
+    border-image: linear-gradient(to left, rgb(8, 145, 178), rgba(0, 0, 0, 0)) 0
+      1 100%;
+    @apply py-4;
+    @apply my-1;
   }
 
   .table-format {
@@ -123,5 +126,11 @@
     @apply float-right;
     @apply text-clip;
     @apply break-words;
+  }
+  .form-date-margin {
+    margin-right: 100px;
+  }
+  .form-amount-margin {
+    margin-right: 42px;
   }
 }

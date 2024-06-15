@@ -6,6 +6,7 @@ import TrashIcon from "../../components/Icons/trash-icon-white.png";
 import EditIcon from "../../components/Icons/edit-icon-white.png";
 import BackIcon from "../../components/Icons/arrow-left-white.png";
 import ForwardIcon from "../../components/Icons/arrow-right-white.png";
+import BasicModal from "../../components/MaterialUI/MaterialModal";
 
 //Data table, Search query module
 export default function TreatmentDTable({ data, patientid }) {
@@ -59,9 +60,7 @@ export default function TreatmentDTable({ data, patientid }) {
         <thead>
           <tr>
             <th className="table-header-center">Date</th>
-            <th className="table-header" colspan="3">
-              Procedure
-            </th>
+            <th className="table-header">Procedure</th>
             <th className="table-header">Amount Paid</th>
             <th className="table-header">Balance</th>
             <th className="table-header">ACTIONS</th>
@@ -75,10 +74,10 @@ export default function TreatmentDTable({ data, patientid }) {
             .map((treatmentRecords) => (
               <tr key={treatmentRecords.id}>
                 <td className="data-cell-center">{treatmentRecords.date}</td>
-                <td className="data-cell" colspan="3">
+                <td className="min-w-48  line-clamp-1 m-6">
                   {treatmentRecords.procedure}
                 </td>
-                <td className="data-cell">{treatmentRecords.amountPaid}</td>
+                <td className="data-cell ">{treatmentRecords.amountPaid}</td>
                 <td className="data-cell">{treatmentRecords.balance}</td>
 
                 {/*Actions*/}
@@ -100,6 +99,11 @@ export default function TreatmentDTable({ data, patientid }) {
                       height="20px"
                     />
                   </button>
+                  <BasicModal
+                    ButtonName={"VIEW PROCEDURE"}
+                    Header={"PROCEDURE DETAILS:"}
+                    Body={treatmentRecords.procedure}
+                  />
                 </td>
               </tr>
             ))}

@@ -110,7 +110,7 @@ export function TreatmentRecord() {
             <form className=" mx-24 ">
               <input
                 type="text"
-                placeholder="Search Name"
+                placeholder="Search Record Date..."
                 className="bg-slate-200 w-96 p-1 rounded-sm"
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
@@ -131,6 +131,7 @@ export function TreatmentRecord() {
 
         <div className="page-container ">
           <div className="page-header-container mb-8">
+            {/*Close Record Button*/}
             <button
               className="float-left bg-slate-50 p-2 rounded-md
               transition duration-400 ease-in-out
@@ -141,13 +142,15 @@ export function TreatmentRecord() {
               <img src={BackIcon} alt="Back" width="26px" height="26px" />
               <b> PATIENT DIRECTORY</b>
             </button>
+            {/*Close Record Button*/}
 
+            <br />
             <br />
             <br />
 
             <h3 className="h4  database-title">TREATMENT RECORDS:</h3>
             <button
-              onClick={() => navigate("/addtreatmentrecord")}
+              onClick={(e) => handleAddTR(e, patientData.id)}
               className=" open-add-form-btn"
             >
               ADD NEW RECORD
