@@ -10,6 +10,8 @@ import BasicModal from "../../components/MaterialUI/MaterialModal";
 
 //Data table, Search query module
 export default function TreatmentDTable({ data, patientid }) {
+  //filters the TreatmentRecord data to show only
+  //records that matches the patient ID
   const filteredData = data.filter(
     (treatmentRecords) =>
       treatmentRecords.patientID &&
@@ -56,81 +58,99 @@ export default function TreatmentDTable({ data, patientid }) {
 
   return (
     <div className="container">
-      <table className="table-format">
-        <thead>
-          <tr>
-            <th className="table-header-center">Date</th>
-            <th className="table-header">Procedure</th>
-            <th className="table-header">Amount Paid</th>
-            <th className="table-header">Balance</th>
-            <th className="table-header">ACTIONS</th>
-          </tr>
-        </thead>
-        <tbody>
-          {/*data is renamed as patient and index is a number counter*/}
-          {filteredData
-            .sort((a, b) => new Date(b.date) - new Date(a.date))
-            .slice(indexOfFirstItem, indexOfLastItem)
-            .map((treatmentRecords) => (
-              <tr key={treatmentRecords.id}>
-                <td className="data-cell-center">{treatmentRecords.date}</td>
-                <td className="min-w-48  line-clamp-1 m-6">
-                  {treatmentRecords.procedure}
-                </td>
-                <td className="data-cell ">{treatmentRecords.amountPaid}</td>
-                <td className="data-cell">{treatmentRecords.balance}</td>
-
-                {/*Actions*/}
-                <td className="action-cell ">
-                  <button
-                    className="icons-btn bg-emerald-400 hover:bg-emerald-500"
-                    onClick={(e) => startEditing(e, treatmentRecords)}
-                  >
-                    <img src={EditIcon} alt="Edit" width="20px" height="20px" />
-                  </button>
-                  <button
-                    className="icons-btn bg-red-400 hover:bg-red-500"
-                    onClick={() => deleteRecords(treatmentRecords.id)}
-                  >
-                    <img
-                      src={TrashIcon}
-                      alt="Delete"
-                      width="20px"
-                      height="20px"
-                    />
-                  </button>
-                  <BasicModal
-                    ButtonName={"VIEW PROCEDURE"}
-                    Header={"PROCEDURE DETAILS:"}
-                    Body={treatmentRecords.procedure}
-                  />
-                </td>
+      {filteredData.length ? (
+        <div>
+          <table className="table-format ">
+            <thead>
+              <tr>
+                <th className="table-header-center">Date</th>
+                <th className="lg:table-header lg:table-cell hidden">
+                  Procedure
+                </th>
+                <th className="table-header">Amount Paid</th>
+                <th className="table-header">Balance</th>
+                <th className="table-header">ACTIONS</th>
               </tr>
-            ))}
-        </tbody>
-      </table>
+            </thead>
+            <tbody>
+              {/*data is renamed as patient and index is a number counter*/}
+              {filteredData
+                .sort((a, b) => new Date(b.date) - new Date(a.date))
+                .slice(indexOfFirstItem, indexOfLastItem)
+                .map((treatmentRecords) => (
+                  <tr key={treatmentRecords.id}>
+                    <td className="data-cell-center">
+                      {treatmentRecords.date}
+                    </td>
+                    <td className="min-w-48  lg:line-clamp-1 m-6  hidden">
+                      {treatmentRecords.procedure}
+                    </td>
+                    <td className="data-cell ">
+                      {treatmentRecords.amountPaid}
+                    </td>
+                    <td className="data-cell">{treatmentRecords.balance}</td>
 
-      <div className="pagination mt-3">
-        <button
-          className="icons-btn bg-pastelpurple hover:bg-violet-800"
-          onClick={() => setCurrentPage(currentPage - 1)}
-          disabled={currentPage === 1}
-        >
-          <img src={BackIcon} alt="Back" width="24px" height="24px" />
-        </button>
-        <span>
-          Page {currentPage} of {Math.ceil(filteredData.length / itemsPerPage)}
-        </span>
-        <button
-          className="icons-btn bg-pastelpurple hover:bg-violet-800"
-          onClick={() => setCurrentPage(currentPage + 1)}
-          disabled={
-            currentPage === Math.ceil(filteredData.length / itemsPerPage)
-          }
-        >
-          <img src={ForwardIcon} alt="Back" width="24px" height="24px" />
-        </button>
-      </div>
+                    {/*Actions*/}
+                    <td className="action-cell ">
+                      <button
+                        className="icons-btn bg-emerald-400 hover:bg-emerald-500"
+                        onClick={(e) => startEditing(e, treatmentRecords)}
+                      >
+                        <img
+                          src={EditIcon}
+                          alt="Edit"
+                          width="20px"
+                          height="20px"
+                        />
+                      </button>
+                      <button
+                        className="icons-btn bg-red-400 hover:bg-red-500"
+                        onClick={() => deleteRecords(treatmentRecords.id)}
+                      >
+                        <img
+                          src={TrashIcon}
+                          alt="Delete"
+                          width="20px"
+                          height="20px"
+                        />
+                      </button>
+                      <BasicModal
+                        ButtonName={"VIEW PROCEDURE"}
+                        Header={"PROCEDURE DETAILS:"}
+                        Body={treatmentRecords.procedure}
+                      />
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+          <div className="pagination mt-3">
+            <button
+              className="icons-btn bg-pastelpurple hover:bg-violet-800"
+              onClick={() => setCurrentPage(currentPage - 1)}
+              disabled={currentPage === 1}
+            >
+              <img src={BackIcon} alt="Back" width="24px" height="24px" />
+            </button>
+            <span>
+              Page {currentPage} of{" "}
+              {Math.ceil(filteredData.length / itemsPerPage)}
+            </span>
+            <button
+              className="icons-btn bg-pastelpurple hover:bg-violet-800"
+              onClick={() => setCurrentPage(currentPage + 1)}
+              disabled={
+                currentPage === Math.ceil(filteredData.length / itemsPerPage)
+              }
+            >
+              <img src={ForwardIcon} alt="Back" width="24px" height="24px" />
+            </button>
+          </div>
+          {/*Main Program End*/}
+        </div>
+      ) : (
+        <div className="text-center">0 Records Found</div>
+      )}
     </div>
   );
 }

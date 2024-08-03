@@ -6,6 +6,7 @@ import { database } from "../../config/firebase-config";
 import { onValue, ref } from "firebase/database";
 import TreatmentDTable from "./TreatmentDTable";
 import BackIcon from "../../components/Icons/arrow-left-purple.png";
+import CustomHeader from "../../components/CustomHeader";
 
 export function TreatmentRecord() {
   //Copy from DataTable the logic for this
@@ -100,22 +101,28 @@ export function TreatmentRecord() {
 
   return (
     <>
-      <div className="bg-slate-100 h-dvh">
+      <div className="bg-slate-100 h-dvh overflow-x-hidden">
+        <div className="lg:hidden contents">
+          <CustomHeader />
+        </div>
+
         {/*Header Container Start*/}
-        <div className=" flex justify-center bg-slate-100 drop-shadow-md ">
+        <div className=" lg:flex hidden justify-center bg-slate-100 drop-shadow-md ">
           <div className="bg-slate-100 flex items-baseline p-2 ">
-            <h5 class="h5 text-pastelpurple font-semibold">
+            {/*Disappear*/}
+            <h5 class="h5 text-pastelpurple font-semibold ">
               ALADANA DENTAL CLINIC
             </h5>
-            <form className=" mx-24 ">
+            <form className="mx-24">
               <input
                 type="text"
                 placeholder="Search Record Date..."
-                className="bg-slate-200 w-96 p-1 rounded-sm"
+                className="bg-slate-200 w-96 p-1 rounded-sm "
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
               {/*<button className='search-btn' type="submit" disabled>Search</button>*/}
             </form>
+
             <button className="bg-slate-50 hover:bg-slate-200 px-4 py-2 drop-shadow-md mr-2 rounded-sm ">
               Birthdays
             </button>
@@ -129,8 +136,9 @@ export function TreatmentRecord() {
         </div>
         {/*Header Container End*/}
 
+        {/*Title Container Start*/}
         <div className="page-container ">
-          <div className="page-header-container mb-8">
+          <div className="page-header-container md:mb-8 ">
             {/*Close Record Button*/}
             <button
               className="float-left bg-slate-50 p-2 rounded-md
@@ -148,7 +156,14 @@ export function TreatmentRecord() {
             <br />
             <br />
 
-            <h3 className="h4  database-title">TREATMENT RECORDS:</h3>
+            <h5 className="h5 database-title contents lg:hidden">
+              TREATMENT RECORDS:
+              <br />
+            </h5>
+
+            <h3 className="h4 database-title lg:contents hidden">
+              TREATMENT RECORDS:
+            </h3>
             <button
               onClick={(e) => handleAddTR(e, patientData.id)}
               className=" open-add-form-btn"
@@ -157,8 +172,9 @@ export function TreatmentRecord() {
             </button>
           </div>
           <br />
+          {/*Title Container End*/}
 
-          <div className=" container w-75 lg:w-48 flex justify-center ">
+          <div className=" container w-75 lg:w-48 justify-center lg:flex hidden">
             <div
               className=" border drop-shadow-md block bg-slate-100 p-6 m-6 
             lg:patient-details-container-lg xl:patient-details-container-xl"
@@ -219,10 +235,12 @@ export function TreatmentRecord() {
           </div>
 
           {/*Sends data from firebase and setSearchQuery*/}
-          <TreatmentDTable
-            data={handleSearchQuery(data)}
-            patientid={patientData.id}
-          />
+          <div className="md:scale-100 scale-75  overflow-x-auto">
+            <TreatmentDTable
+              data={handleSearchQuery(data)}
+              patientid={patientData.id}
+            />
+          </div>
         </div>
       </div>
     </>

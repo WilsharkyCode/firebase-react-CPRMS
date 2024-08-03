@@ -14,7 +14,7 @@ export default function CustomHeader() {
       {/*Header Container Start*/}
       <div className=" flex justify-center bg-slate-100 drop-shadow-md ">
         <div className="bg-slate-100 flex items-baseline p-2">
-          <h5 class="h5 text-pastelpurple font-semibold mr-96">
+          <h5 class="h5 text-pastelpurple font-semibold md:mr-96 mr-10">
             ALADANA DENTAL CLINIC
           </h5>
 

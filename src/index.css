@@ -3,6 +3,13 @@
 @tailwind utilities;
 
 @layer components {
+  .scale-60 {
+    --tw-scale-x: 0.65;
+    --tw-scale-y: 0.65;
+    transform: translate(var(--tw-translate-x), var(--tw-translate-y))
+      rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y))
+      scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+  }
   .text-xxl {
     @apply text-4xl;
   }
@@ -64,22 +71,19 @@
   }
 
   .table-format {
-    @apply table-auto;
-    @apply mx-auto;
     @apply border-cyan-600;
     @apply border;
     @apply border-collapse;
   }
 
   .open-add-form-btn {
-    @apply float-right;
+    @apply lg:float-right;
     @apply text-white;
     @apply rounded-sm;
     @apply text-center;
     @apply bg-pastelpurple;
     @apply hover:bg-violet-800;
-
-    @apply mb-4;
+    @apply md:mb-4;
     @apply mt-0;
     @apply px-4;
     @apply py-2;

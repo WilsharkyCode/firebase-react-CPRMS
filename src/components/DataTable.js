@@ -7,9 +7,10 @@ import EditIcon from "./Icons/edit-icon-white.png";
 import TrashIcon from "./Icons/trash-icon-white.png";
 import ForwardIcon from "./Icons/arrow-right-white.png";
 import BackIcon from "./Icons/arrow-left-white.png";
+import WarningModal from "./MaterialUI/WarningMUI";
 
 //Data table, Search query module
-export default function DataTable({ data }) {
+export default function DataTable({ data, dataRecords }) {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
 
@@ -42,8 +43,18 @@ export default function DataTable({ data }) {
   );
 
   //deletes Item form DB, callback to not auto trigger the function
-  const deleteRecords = useCallback((id) => {
+  const deleteRecords = useCallback((id, dataRecords) => {
     remove(ref(database, "patients/" + id));
+
+    //delete every record with a certain ID
+    dataRecords
+      .filter(
+        (treatmentRecords) =>
+          treatmentRecords.patientID && treatmentRecords.patientID.includes(id)
+      )
+      .map((treatmentRecords) =>
+        remove(ref(database, "TreatmentRecords/" + treatmentRecords.id))
+      );
     console.log("Delete Success");
   }, []);
 
@@ -72,8 +83,8 @@ export default function DataTable({ data }) {
   );
 
   return (
-    <div className="container ">
-      <table className="table-format">
+    <div className="flex items-center justify-center flex-col">
+      <table className="table-format ">
         <thead>
           <tr>
             <th className="table-header-center">PATIENT ID</th>
@@ -112,9 +123,12 @@ export default function DataTable({ data }) {
                 >
                   <img src={EditIcon} alt="Edit" width="20px" height="20px" />
                 </button>
+                <WarningModal id={patient.id} dataRecords={dataRecords} />
+
+                {/*
                 <button
                   className="icons-btn bg-red-400 hover:bg-red-500"
-                  onClick={() => deleteRecords(patient.id)}
+                  onClick={() => deleteRecords(patient.id, dataRecords)}
                 >
                   <img
                     src={TrashIcon}
@@ -123,6 +137,7 @@ export default function DataTable({ data }) {
                     height="20px"
                   />
                 </button>
+                */}
               </td>
             </tr>
           ))}

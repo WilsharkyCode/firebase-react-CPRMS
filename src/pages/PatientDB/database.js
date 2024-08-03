@@ -5,9 +5,10 @@ import DataTable from "../../components/DataTable";
 import { useNavigate } from "react-router-dom";
 import { database } from "../../config/firebase-config";
 import { ref, onValue } from "firebase/database";
-
+import CustomHeader from "../../components/CustomHeader";
 export default function Database() {
   const [data, setData] = useState([]);
+  const [dataRecords, setRecordData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const { dispatch: authDispatch } = useContext(AuthContext);
 
@@ -31,6 +32,19 @@ export default function Database() {
     });
   }, []);
 
+  useEffect(() => {
+    const itemsRef = ref(database, "TreatmentRecords/");
+    onValue(itemsRef, (snapshot) => {
+      const data = snapshot.val();
+      const loadedItems = data
+        ? Object.keys(data).map((key) => ({ id: key, ...data[key] }))
+        : [];
+
+      //export loaded items from local func to main Func
+      setRecordData(loadedItems);
+    });
+  }, []);
+
   //logs out and
   //useCallback prevents function from auto dispatching
   const SignOutDispatch = useCallback(() => {
@@ -46,9 +60,12 @@ export default function Database() {
   };
 
   return (
-    <div className="bg-slate-100 h-dvh">
+    <div className="bg-slate-100 h-dvh overflow-x-hidden">
+      <div className="lg:hidden contents">
+        <CustomHeader />
+      </div>
       {/*Header Container Start*/}
-      <div className=" flex justify-center bg-slate-100 drop-shadow-md ">
+      <div className="lg:flex hidden  justify-center bg-slate-100 drop-shadow-md ">
         <div className="bg-slate-100 flex items-baseline p-2 ">
           <h5 class="h5 text-pastelpurple font-semibold">
             ALADANA DENTAL CLINIC
@@ -76,8 +93,15 @@ export default function Database() {
       {/*Header Container End*/}
 
       <div className="page-container ">
-        <div className="page-header-container">
-          <h3 className="h4 database-title">PATIENT DIRECTORY:</h3>
+        <div className="page-header-container ">
+          <h4 className="h4 database-title lg:contents hidden">
+            PATIENT DIRECTORY:
+          </h4>
+          <h5 className="h5 database-title contents lg:hidden">
+            TREATMENT RECORDS:
+            <br />
+          </h5>
+
           <button
             onClick={() => Nav("/recordform")}
             className="open-add-form-btn"
@@ -85,12 +109,14 @@ export default function Database() {
             ADD NEW PATIENT
           </button>
         </div>
-        <br />
-        <br />
-        <br />
+
+        <div className="md:contents hidden">
+          <br />
+          <br />
+        </div>
         {/*Sends data from firebase and setSearchQuery*/}
-        <div>
-          <DataTable data={handleSearchQuery(data)} />
+        <div className="md:scale-100 scale-90 overflow-x-auto ">
+          <DataTable data={handleSearchQuery(data)} dataRecords={dataRecords} />
         </div>
       </div>
     </div>

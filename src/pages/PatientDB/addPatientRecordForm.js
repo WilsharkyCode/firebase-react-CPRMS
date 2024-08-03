@@ -41,8 +41,11 @@ export default function PatientRecordForm() {
     <>
       <CustomHeader />
 
-      <div className="record-container bg-slate-200 h-screen">
-        <form className="bg-slate-100 drop-shadow-lg" onSubmit={addItems}>
+      <div className="record-container bg-slate-200 h-screen overflow-auto">
+        <form
+          className="bg-slate-100 drop-shadow-lg md:scale-100 scale-75"
+          onSubmit={addItems}
+        >
           <h3 className="h3">Enter Patient Data</h3>
           <table>
             <tr>

@@ -56,8 +56,11 @@ export default function EditTreatmentRecord() {
   return (
     <>
       <CustomHeader />
-      <div className="record-container bg-slate-200 h-screen">
-        <form className="bg-slate-100 drop-shadow-lg" onSubmit={editItems}>
+      <div className="record-container bg-slate-200 h-screen overflow-auto">
+        <form
+          className="bg-slate-100 drop-shadow-lg md:scale-100 scale-75"
+          onSubmit={editItems}
+        >
           <h3 className="h3">Edit Treatment Record Data</h3>
           <table>
             <tr>
