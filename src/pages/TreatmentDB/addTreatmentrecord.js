@@ -1,19 +1,40 @@
-import { useState, useContext, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { database } from "../../config/firebase-config";
 import { set, ref, push } from "firebase/database";
-import { RecordContext } from "../../components/RecordContext";
 import CustomHeader from "../../components/CustomHeader";
 
 export default function AddTreatmentRecord() {
   const navigate = useNavigate();
-  const { patientUID } = useContext(RecordContext);
+  const [patientUID, setpatientUID] = useState("");
   const [addItem, setAddItem] = useState({
+    patientID: null,
     date: "",
     procedure: "",
     amountPaid: 0,
     balance: 0,
   });
+
+  //Cache Retriever
+  //Retrieves Cached ID and Post them to setAddItem
+  //convert cache to parsedData
+  useEffect(() => {
+    if ("caches" in window) {
+      caches.open("AddRecordCache").then((cache) => {
+        cache.match("AddRecordCache").then((response) => {
+          if (response) {
+            response.text().then((id) => {
+              const parsedData = JSON.parse(id);
+              console.log("Retrieved from cache: id:", parsedData);
+              setpatientUID(parsedData);
+            });
+          } else {
+            console.log("Nothing in cache");
+          }
+        });
+      });
+    }
+  }, []);
 
   //AutoGenerates ID then add
   const addItems = () => {
@@ -33,6 +54,7 @@ export default function AddTreatmentRecord() {
     }
   };
 
+  //BackButton
   const handleBackButton = useCallback(() => {
     navigate("/treatment");
   }, [navigate]);

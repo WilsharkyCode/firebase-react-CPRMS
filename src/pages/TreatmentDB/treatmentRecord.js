@@ -1,5 +1,4 @@
 import { useContext, useEffect, useState, useCallback } from "react";
-import { RecordContext } from "../../components/RecordContext";
 import { AuthContext } from "../../components/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { database } from "../../config/firebase-config";
@@ -24,7 +23,6 @@ export function TreatmentRecord() {
     email: "",
   });
   const navigate = useNavigate();
-  const { dispatch } = useContext(RecordContext);
   const { dispatch: authDispatch } = useContext(AuthContext);
 
   //Retrieves Cached JSON patientData struc, parses it and posts them to editingItem
@@ -64,20 +62,31 @@ export function TreatmentRecord() {
   const handleCloseRecord = useCallback(
     (e) => {
       e.preventDefault();
-      dispatch({ type: "RETURN_ID" });
       navigate("/");
     },
-    [navigate, dispatch]
+    [navigate]
   );
 
+  //adds JSONifies data then caches it to "AddRecodCache" cache
+  const cacheTreatmentRecord = useCallback((id) => {
+    const parsedData = JSON.stringify(id);
+    if ("caches" in window) {
+      caches.open("AddRecordCache").then((cache) => {
+        cache.put("AddRecordCache", new Response(parsedData));
+        console.log(parsedData);
+      });
+    }
+  }, []);
+  //Targeting system for patientData to edit and nav
+  //calls cachepatientData func
   const handleAddTR = useCallback(
     (e, id) => {
       e.preventDefault();
-      dispatch({ type: "ADD_RECORD", payload: id });
-      console.log("UID: ", id, "Dispatched");
+      cacheTreatmentRecord(id);
+      console.log("Caching success");
       navigate("/addTreatmentRecord");
     },
-    [navigate, dispatch]
+    [navigate, cacheTreatmentRecord]
   );
 
   //to Filter Keys

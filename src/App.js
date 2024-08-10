@@ -2,7 +2,6 @@ import LoginForm from "./pages/loginform";
 import Database from "./pages/PatientDB/database";
 import "./styles.css";
 import { Routes, Route, Navigate } from "react-router-dom";
-import { AuthContext } from "./components/AuthContext";
 
 import { useContext } from "react";
 import AddPatientRecordForm from "./pages/PatientDB/addPatientRecordForm";
@@ -11,6 +10,7 @@ import { TreatmentRecord } from "./pages/TreatmentDB/treatmentRecord";
 import EditPatientRecordForm from "./pages/PatientDB/editPatientRecord";
 import AddTreatmentRecord from "./pages/TreatmentDB/addTreatmentrecord";
 import EditTreatmentRecord from "./pages/TreatmentDB/editTreatmentRecord";
+import { AuthContext } from "./components/AuthContext";
 
 function App() {
   //imports global var currentUser

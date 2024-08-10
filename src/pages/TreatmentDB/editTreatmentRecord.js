@@ -14,6 +14,8 @@ export default function EditTreatmentRecord() {
     amountPaid: 0,
     balance: 0,
   });
+
+  //Cache Retriever
   //Retrieves Cached ID and Post them to editingItem
   useEffect(() => {
     if ("caches" in window) {

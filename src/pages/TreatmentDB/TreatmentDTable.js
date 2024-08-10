@@ -15,7 +15,7 @@ export default function TreatmentDTable({ data, patientid }) {
   const filteredData = data.filter(
     (treatmentRecords) =>
       treatmentRecords.patientID &&
-      treatmentRecords.patientID.includes(patientid)
+      treatmentRecords.patientID.toString().includes(patientid)
   );
 
   const [currentPage, setCurrentPage] = useState(1);

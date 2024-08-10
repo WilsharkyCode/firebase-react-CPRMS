@@ -4,7 +4,6 @@ import { ref, remove } from "firebase/database";
 import { database } from "../config/firebase-config";
 import ballot from "./Icons/ballot.png";
 import EditIcon from "./Icons/edit-icon-white.png";
-import TrashIcon from "./Icons/trash-icon-white.png";
 import ForwardIcon from "./Icons/arrow-right-white.png";
 import BackIcon from "./Icons/arrow-left-white.png";
 import WarningModal from "./MaterialUI/WarningMUI";
@@ -41,22 +40,6 @@ export default function DataTable({ data, dataRecords }) {
     },
     [navigate, cachepatientData]
   );
-
-  //deletes Item form DB, callback to not auto trigger the function
-  const deleteRecords = useCallback((id, dataRecords) => {
-    remove(ref(database, "patients/" + id));
-
-    //delete every record with a certain ID
-    dataRecords
-      .filter(
-        (treatmentRecords) =>
-          treatmentRecords.patientID && treatmentRecords.patientID.includes(id)
-      )
-      .map((treatmentRecords) =>
-        remove(ref(database, "TreatmentRecords/" + treatmentRecords.id))
-      );
-    console.log("Delete Success");
-  }, []);
 
   //Cache Module for Editing
   //handles data transfer
