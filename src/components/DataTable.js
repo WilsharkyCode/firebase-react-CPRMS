@@ -1,7 +1,5 @@
 import React, { useCallback, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ref, remove } from "firebase/database";
-import { database } from "../config/firebase-config";
 import ballot from "./Icons/ballot.png";
 import EditIcon from "./Icons/edit-icon-white.png";
 import ForwardIcon from "./Icons/arrow-right-white.png";

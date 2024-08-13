@@ -1,13 +1,12 @@
 import { Button } from "react-bootstrap";
 import { auth, provider } from "../config/firebase-config";
-import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import {  signInWithPopup, go } from "firebase/auth";
-import { AuthContext } from "./AuthContext";
 
+
+//disabled until further notice
 export default function GoogleSignIn(){
     const navigate = useNavigate();
-    const { dispatch } = useContext(AuthContext);
 
     function handleOAuth() {
         provider.addScope('email');
@@ -16,7 +15,6 @@ export default function GoogleSignIn(){
             // This gives you a Google Access Token. You can use it to access the Google API.
             // The signed-in user info.
             const user = result.user;
-            dispatch({ type: "LOGIN", payload: user });
             navigate("/") ;
             // IdP data available using getAdditionalUserInfo(result)
             // ...
@@ -35,8 +33,6 @@ export default function GoogleSignIn(){
         <Button onClick={() => handleOAuth()}>
                 Sign in With Google
         </Button>
-        
-        
         </>
     )
     

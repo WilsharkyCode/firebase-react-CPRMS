@@ -10,11 +10,11 @@ import { TreatmentRecord } from "./pages/TreatmentDB/treatmentRecord";
 import EditPatientRecordForm from "./pages/PatientDB/editPatientRecord";
 import AddTreatmentRecord from "./pages/TreatmentDB/addTreatmentrecord";
 import EditTreatmentRecord from "./pages/TreatmentDB/editTreatmentRecord";
-import { AuthContext } from "./components/AuthContext";
+import { useAuth } from "./components/authContext";
 
 function App() {
   //imports global var currentUser
-  const { currentUser } = useContext(AuthContext);
+  const { currentUser } = useAuth();
 
   //inputs children and shows children if CheckAuth is true
   //else login you go

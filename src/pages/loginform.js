@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import React from "react";
 import { auth } from "../config/firebase-config";
 import { signInWithEmailAndPassword } from "firebase/auth";
@@ -10,7 +10,6 @@ export default function LoginForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { dispatch } = useContext(AuthContext);
   const navigate = useNavigate();
 
   //handles login for email and password
@@ -22,7 +21,6 @@ export default function LoginForm() {
       .then((userCredential) => {
         // Signed in
         const user = userCredential.user;
-        dispatch({ type: "LOGIN", payload: user });
         console.log(user);
         navigate("/");
         // ...
@@ -61,7 +59,6 @@ export default function LoginForm() {
           <button className="login-btn" type="submit">
             Login
           </button>
-          <GoogleSignIn />
         </form>
       </div>
     </div>

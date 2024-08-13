@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext, useCallback } from "react";
 import "./database.css";
-import { AuthContext } from "../../components/AuthContext";
+import SignOutBtn from "../../components/SignOutBtn";
 import DataTable from "../../components/DataTable";
 import { useNavigate } from "react-router-dom";
 import { database } from "../../config/firebase-config";
@@ -10,7 +10,6 @@ export default function Database() {
   const [data, setData] = useState([]);
   const [dataRecords, setRecordData] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const { dispatch: authDispatch } = useContext(AuthContext);
 
   const Nav = useNavigate();
 
@@ -45,13 +44,6 @@ export default function Database() {
     });
   }, []);
 
-  //logs out and
-  //useCallback prevents function from auto dispatching
-  const SignOutDispatch = useCallback(() => {
-    authDispatch({ type: "LOGOUT" });
-    console.log("LogOut dispatch Successful");
-  }, [authDispatch]);
-
   //handles search query on data from database
   const handleSearchQuery = (data) => {
     return data?.filter((patient) =>
@@ -82,12 +74,7 @@ export default function Database() {
           <button className="bg-slate-50 hover:bg-slate-200 px-4 py-2 drop-shadow-md mr-2 rounded-sm ">
             Birthdays
           </button>
-          <button
-            className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-            onClick={SignOutDispatch}
-          >
-            Logout
-          </button>
+          <SignOutBtn />
         </div>
       </div>
       {/*Header Container End*/}

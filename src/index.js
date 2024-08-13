@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import { BrowserRouter } from "react-router-dom";
-import { AuthContextProvider } from "./components/AuthContext";
+import { AuthProvider } from "./components/authContext";
 import { StyledEngineProvider } from "@mui/material";
 import "./index.css";
 
@@ -11,10 +11,10 @@ import "./index.css";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <StyledEngineProvider injectFirst>
-    <AuthContextProvider>
+    <AuthProvider>
       <BrowserRouter>
         <App />
       </BrowserRouter>
-    </AuthContextProvider>
+    </AuthProvider>
   </StyledEngineProvider>
 );

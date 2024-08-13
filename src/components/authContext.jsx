@@ -8,7 +8,7 @@ export function useAuth() {
     return useContext(AuthContext);
 }
 
-function AuthProvider({children}) {
+export function AuthProvider({children}) {
     const [currentUser, setcurrentUser] = useState(null);
     const [loading, setloading] = useState(true);
 
@@ -23,10 +23,10 @@ function AuthProvider({children}) {
     // in between states, load
     async function initializeUser(user) {
         if (user) {
-            setcurrentUser(...user)
+            setcurrentUser(user);
         }
         else {
-            setcurrentUser(null)
+            setcurrentUser(null);
         }
         setloading(false);
     }

@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { database } from "../../config/firebase-config";
 import { set, ref } from "firebase/database";
 import BackBtn from "../../components/backBtn";
-import { AuthContext } from "../../components/AuthContext";
 import CustomHeader from "../../components/CustomHeader";
 
 //Input Patient Details

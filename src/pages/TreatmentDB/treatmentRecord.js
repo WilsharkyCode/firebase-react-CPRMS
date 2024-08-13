@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState, useCallback } from "react";
-import { AuthContext } from "../../components/AuthContext";
+import SignOutBtn from "../../components/SignOutBtn";
 import { useNavigate } from "react-router-dom";
 import { database } from "../../config/firebase-config";
 import { onValue, ref } from "firebase/database";
@@ -23,7 +23,6 @@ export function TreatmentRecord() {
     email: "",
   });
   const navigate = useNavigate();
-  const { dispatch: authDispatch } = useContext(AuthContext);
 
   //Retrieves Cached JSON patientData struc, parses it and posts them to editingItem
   useEffect(() => {
@@ -101,13 +100,6 @@ export function TreatmentRecord() {
     );
   };
 
-  //logs out and
-  //useCallback prevents function from auto dispatching
-  const SignOutDispatch = useCallback(() => {
-    authDispatch({ type: "LOGOUT" });
-    console.log("LogOut dispatch Successful");
-  }, [authDispatch]);
-
   return (
     <>
       <div className="bg-slate-100 h-dvh overflow-x-hidden">
@@ -135,12 +127,7 @@ export function TreatmentRecord() {
             <button className="bg-slate-50 hover:bg-slate-200 px-4 py-2 drop-shadow-md mr-2 rounded-sm ">
               Birthdays
             </button>
-            <button
-              className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
-              onClick={SignOutDispatch}
-            >
-              Logout
-            </button>
+            <SignOutBtn />
           </div>
         </div>
         {/*Header Container End*/}
