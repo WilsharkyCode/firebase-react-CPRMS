@@ -16,15 +16,6 @@
   column-gap: 20px;
 }
 
-.search-container {
-  margin: 0 3rem;
-}
-
-.basic-search-bar {
-  margin-right: 10px;
-  width: 40rem;
-}
-
 .display-container {
   background-color: rgb(240, 240, 240);
   padding: 20px;
@@ -60,11 +51,4 @@
   display: flexbox;
   align-items: center;
   justify-content: center;
-}
-
-.pagination {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
 }

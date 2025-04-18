@@ -1,6 +1,5 @@
 import { auth } from "../config/firebase-config";
 import { signOut } from "firebase/auth";
-import { useCallback } from "react";
 
 export default function SignOutBtn() {
 

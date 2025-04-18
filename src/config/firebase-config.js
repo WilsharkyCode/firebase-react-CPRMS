@@ -2,7 +2,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 import { getDatabase } from "firebase/database";
-import { GoogleAuthProvider } from "firebase/auth";
 
 //gets config from .env.local or local environment variables
 //used to easily port different configs without hardcoding
@@ -18,7 +17,6 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const database = getDatabase(app);
-export const provider = new GoogleAuthProvider();

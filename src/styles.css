@@ -4,13 +4,13 @@ body {
   margin: 0;
   height: 100vh;
 }
-.record-container,
-.align-center-container {
+.record-container {
   display: flex;
   align-items: center;
   justify-content: center;
   height: 80vh;
 }
+
 .record-container form {
   padding: 1rem;
   border: #333 solid 1px;
@@ -18,13 +18,29 @@ body {
   border-radius: 3px;
   width: 40rem;
 }
+.align-center-container {
+  display: flex;
+  height: 100vh;
+  background-image: url("/src/components/img/login-bg.jpg");
 
+  /* Set the repeat property to 'no-repeat' */
+  background-repeat: no-repeat;
+
+  /* Center the background image */
+  background-position: center;
+
+  /* Set the background size to cover the element */
+  background-size: cover;
+
+  /* Optionally, set the background color if you want a default background behind the image */
+  background-color: #2a54be;
+}
 .login-container {
+  width: 37.5%; /* 3.75 of the screen width */
   background-color: #fff;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 300px;
   text-align: center;
 }
 
@@ -44,8 +60,123 @@ label {
   margin-bottom: 10px;
 }
 
+/*
+login/signup input-form START
+*/
+.group {
+  position: relative;
+}
+
+.form {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  border: 1px solid white;
+  padding: 120px 40px;
+  padding-top: 60px;
+  padding-bottom: 90px;
+  padding-right: 40px;
+  padding-left: 40px;
+  background-color: rgb(255, 255, 255);
+  position: relative;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.form p {
+  padding-bottom: 20px;
+  font-size: 20px;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+  color: rgb(0, 0, 0);
+}
+
+.container-1 {
+  padding-top: 30px;
+}
+
+.main-input {
+  font-size: 16px;
+  padding: 10px 30px 10px 5px;
+  display: block;
+  width: 20rem;
+  border: none;
+  border-radius: 3px;
+  border: 1px solid #6c6c6c;
+  background: transparent;
+  color: #000000;
+}
+
+.main-input:focus {
+  outline: none;
+  border-color: #1c24ff;
+}
+
+.lebal-email {
+  color: #999999;
+  font-size: 18px;
+  font-weight: normal;
+  position: absolute;
+  pointer-events: none;
+  left: 5px;
+  top: 10px;
+  transition: 0.2s ease all;
+  -moz-transition: 0.2s ease all;
+  -webkit-transition: 0.2s ease all;
+}
+
+.main-input:focus ~ .lebal-email,
+.main-input:valid ~ .lebal-email {
+  top: -20px;
+  font-size: 14px;
+  color: #1c24ff;
+}
+
+.highlight-span {
+  position: absolute;
+  height: 60%;
+  width: 0px;
+  top: 25%;
+  left: 0;
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+.main-input:focus ~ .highlight-span {
+  -webkit-animation: input-focus 0.3s ease;
+  animation: input-focus 0.3s ease;
+}
+
+@keyframes input-focus {
+  from {
+    background: #1c24ff;
+  }
+
+  to {
+    width: 20rem;
+  }
+}
+
+.submit {
+  margin-top: 1.2rem;
+  padding: 10px 20px;
+  border-radius: 10px;
+}
+/*
+login/signup input-form END
+*/
+
 .auth-input {
-  width: 100%;
+  width: 80%;
   padding: 10px;
   box-sizing: border-box;
   border: 1px solid #ccc;

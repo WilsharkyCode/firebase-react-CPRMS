@@ -3,27 +3,20 @@ import React from "react";
 import { auth } from "../config/firebase-config";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
-import GoogleSignIn from "../components/GoogleSignIn";
 
 export default function LoginForm() {
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
 
-  //handles login for email and password
   const handleLogin = (e) => {
-    //prevents page from autorefreashing and erasing entered data
     e.preventDefault();
-
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        // Signed in
-        const user = userCredential.user;
-        console.log(user);
         navigate("/");
-        // ...
       })
       .catch((error) => {
         setError(true);
@@ -37,30 +30,51 @@ export default function LoginForm() {
   }
 
   return (
-    <div className="align-center-container">
-      <div className="login-container">
-        <h2>Login Form</h2>
-        {errorMessage()}
-        <form className="login-form" onSubmit={handleLogin}>
-          <label for="username">Username:</label>
-          <input
-            className="auth-input"
-            type="text"
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          ></input>
-          <label for="password">Password:</label>
-          <input
-            className="auth-input"
-            type="password"
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          ></input>
-          <button className="login-btn" type="submit">
+    <>
+      <div className="align-center-container ">
+        <form className="form lg:w-[37.5%] w-[100%]" onSubmit={handleLogin}>
+          <label
+            className="mb-10 text-center
+          "
+          >
+            ALDANA DENTAL CLINIC MANAGEMENT SYSTEM
+          </label>
+          <p>Login</p>
+          {errorMessage()}
+          <div className="group">
+            <input
+              required
+              className="main-input"
+              type="text"
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            <span className="highlight-span" />
+            <label className="lebal-email">Email</label>
+          </div>
+          <div className="container-1">
+            <div className="group relative">
+              <input
+                required
+                className="main-input pr-10" // Added padding for the toggle button
+                type={showPassword ? "text" : "password"}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <span className="highlight-span" />
+              <label className="lebal-email">Password</label>
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-2 top-1/2 -translate-y-1/2 text-sm text-gray-500 hover:text-gray-700 focus:outline-none"
+              >
+                {showPassword ? "Hide" : "Show"}
+              </button>
+            </div>
+          </div>
+          <button className="login-btn mt-10" type="submit">
             Login
           </button>
         </form>
       </div>
-    </div>
+    </>
   );
 }

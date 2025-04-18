@@ -79,7 +79,7 @@
   .open-add-form-btn {
     @apply lg:float-right;
     @apply text-white;
-    @apply rounded-sm;
+    @apply rounded-md;
     @apply text-center;
     @apply bg-pastelpurple;
     @apply hover:bg-violet-800;

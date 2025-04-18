@@ -12,6 +12,7 @@ import "@fontsource/roboto/300.css";
 import "@fontsource/roboto/400.css";
 import "@fontsource/roboto/500.css";
 import "@fontsource/roboto/700.css";
+import { Tooltip } from "@mui/material";
 
 const style = {
   position: "absolute",
@@ -29,28 +30,34 @@ export default function WarningModal({ id, dataRecords }) {
   const handleClose = () => setOpen(false);
 
   //deletes Item form DB, callback to not auto trigger the function
-  const handleDelete = useCallback((id, dataRecords) => {
-    //delete every record with a certain ID
+  const handleDelete = useCallback((dataRecords, id) => {
+    // delete every record with a certain ID
     dataRecords
       .filter(
         (treatmentRecords) =>
-          treatmentRecords.patientID && treatmentRecords.patientID.includes(id)
+          treatmentRecords.patientID &&
+          (Array.isArray(treatmentRecords.patientID) ||
+            typeof treatmentRecords.patientID === "string") &&
+          treatmentRecords.patientID.includes(id)
       )
-      .map((treatmentRecords) =>
+      .forEach((treatmentRecords) =>
         remove(ref(database, "TreatmentRecords/" + treatmentRecords.id))
       );
+
     remove(ref(database, "patients/" + id));
     console.log("Delete Success");
   }, []);
 
   return (
     <div>
-      <button
-        className="icons-btn bg-red-400 hover:bg-red-500"
-        onClick={handleOpen}
-      >
-        <img src={TrashIcon} alt="Delete" width="20px" height="20px" />
-      </button>
+      <Tooltip title="Delete" arrow>
+        <button
+          className="icons-btn bg-red-400 hover:bg-red-500"
+          onClick={handleOpen}
+        >
+          <img src={TrashIcon} alt="Delete" width="20px" height="20px" />
+        </button>
+      </Tooltip>
       <Modal
         open={open}
         onClose={handleClose}
@@ -61,14 +68,15 @@ export default function WarningModal({ id, dataRecords }) {
           <Typography id="modal-modal-title" variant="h6" component="h2">
             WARNING
           </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
+          <Typography id="modal-modal-description" sx={{ my: 2 }}>
             This will delete the patient and all of their records. This action
             cannot be undone.
           </Typography>
+
           <Button onClick={handleClose}>Cancel</Button>
           <Button
             className=" bg-red-400 hover:bg-red-500 text-white float-right"
-            onClick={() => handleDelete(id, dataRecords)}
+            onClick={() => handleDelete(dataRecords, id)}
           >
             Delete
           </Button>

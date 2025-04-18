@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ballot from "./Icons/ballot.png";
 import EditIcon from "./Icons/edit-icon-white.png";
