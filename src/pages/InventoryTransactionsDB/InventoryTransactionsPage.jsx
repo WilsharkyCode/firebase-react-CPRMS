@@ -20,53 +20,49 @@ import { signOut } from 'firebase/auth';
 import { onValue, ref } from 'firebase/database';
 import CryptoJS from 'crypto-js';
 import DrawerContent from '../../components/MaterialUI/SidebarModule';
-import TreatmentTable from './TreatmentTable';
+import InventoryTransactionsTable from './InventoryTransactionsTable';
 
 
 const SECRET_KEY = process.env.REACT_APP_AES_ENCRYPTION_KEY;
 const drawerWidth = 280;
 
-export default function TreatmentRecordPage() {
+export default function InventoryTransactionsPage() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [data, setData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [patientData, setPatientData] = useState({ 
-    id: null,
-    firstName: "",
-    lastName: "",
-    middleInitial: ""
-  });
+  const [inventoryItemData, setInventoryItemData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if ('caches' in window) {
-      caches.open('PatientData').then((cache) => {
-        cache.match('PatientData').then((response) => {
-          if (response) {
-            response.text().then((encryptedText) => {
-              try {
-                const bytes = CryptoJS.AES.decrypt(encryptedText, SECRET_KEY);
-                const decryptedData = bytes.toString(CryptoJS.enc.Utf8);
-                if (!decryptedData) {
-                  console.error('Failed to decrypt data.');
-                  return;
-                }
-                const parsedData = JSON.parse(decryptedData);
-                setPatientData(parsedData);
-              } catch (err) {
-                console.error('Decryption or parsing error:', err);
-              }
-            });
-          }
-        });
-      });
-    }
-  }, []);
+ useEffect(() => {
+     if ("caches" in window) {
+       caches.open("InventoryItemData").then((cache) => {
+         cache.match("InventoryItemData").then((response) => {
+           if (response) {
+             response.text().then(async (encryptedText) => {
+               try {
+                 const bytes = CryptoJS.AES.decrypt(encryptedText, SECRET_KEY);
+                 const decryptedData = bytes.toString(CryptoJS.enc.Utf8);
+                 if (!decryptedData) {
+                   console.error("❌ Failed to decrypt InventoryItemData.");
+                   return;
+                 }
+                 const parsedData = JSON.parse(decryptedData);
+                 setInventoryItemData(parsedData);
+ 
+               } catch (err) {
+                 console.error("⚠️ Cache or Firebase fetch error:", err);
+               }
+             });
+           }
+         });
+       });
+     }
+   }, []);
 
   useEffect(() => {
-    const itemsRef = ref(database, 'TreatmentRecords/');
+    const itemsRef = ref(database, '/InventoryTransactions');
     onValue(itemsRef, (snapshot) => {
       const data = snapshot.val();
       const loadedItems = data
@@ -92,7 +88,7 @@ export default function TreatmentRecordPage() {
 
   const handleCloseRecord = useCallback((e) => {
     e.preventDefault();
-    navigate('/patient');
+    navigate('/inventory');
   }, [navigate]);
 
     const handleSignOut =() => {
@@ -104,28 +100,24 @@ export default function TreatmentRecordPage() {
           });;
     };
 
-  const cacheTreatmentRecord = useCallback((id) => {
-    try {
-      const stringifiedData = JSON.stringify(id);
-      const encrypted = CryptoJS.AES.encrypt(stringifiedData, SECRET_KEY).toString();
-
-      if ('caches' in window) {
-        caches.open('AddRecordCache').then((cache) => {
-          cache.put('AddRecordCache', new Response(encrypted));
-        });
-      }
-    } catch (err) {
-      console.error('❌ Error encrypting or caching AddRecord:', err);
+  const cacheData = useCallback((key, data) => {
+    const jsonString = JSON.stringify(data);
+    const encrypted = CryptoJS.AES.encrypt(jsonString, SECRET_KEY).toString();
+    if ("caches" in window) {
+      caches.open(key).then((cache) => {
+        cache.put(key, new Response(encrypted));
+        console.log("Encrypted & Cached:", encrypted);
+      });
     }
   }, []);
 
-  const handleAddTR = useCallback((e, id) => {
+  const handleAddTransaction = useCallback((e, item) => {
     e.preventDefault();
-    cacheTreatmentRecord(id);
-    navigate('/patient/treatment/add');
-  }, [navigate, cacheTreatmentRecord]);
+    cacheData("addInventoryTransaction", item);
+    navigate('/inventory/transactions/add');
+  }, [navigate, cacheData]);
 
-  const keys = ['date'];
+  const keys = ['transactionDate'];
   const handleSearchQuery = (data) => {
     return data?.filter((record) =>
       keys.some((key) =>
@@ -171,8 +163,9 @@ export default function TreatmentRecordPage() {
             className="text-slate-50 hover:text-slate-700"
             
           >
-            ⬅ Back to Patient Directory
+            ⬅ Back to Inventory
           </Button>
+          
           <Divider
             orientation="vertical"
             flexItem
@@ -246,10 +239,10 @@ export default function TreatmentRecordPage() {
             </form>
           </div>
           <button
-            onClick={(e) => handleAddTR(e, patientData.id)}
+            onClick={(e) => handleAddTransaction(e, inventoryItemData)}
             className="open-add-form-btn mt-3"
           >
-            ADD NEW RECORD
+            ADD NEW TRANSACTION
           </button>
         </div>
 
@@ -258,7 +251,12 @@ export default function TreatmentRecordPage() {
             <CircularProgress />
           </div>
         ) : (
-          <TreatmentTable data={handleSearchQuery(data)} patientData={patientData} />
+         // <TreatmentTable data={handleSearchQuery(data)} />
+        <div>
+
+          <InventoryTransactionsTable data={handleSearchQuery(data)}itemData={inventoryItemData}/>
+        </div> 
+          
         )}
       </Box>
     </Box>

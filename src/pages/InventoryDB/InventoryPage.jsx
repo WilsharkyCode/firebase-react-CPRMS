@@ -18,55 +18,22 @@ import { useNavigate } from 'react-router-dom';
 import { database, auth } from '../../config/firebase-config';
 import { signOut } from 'firebase/auth';
 import { onValue, ref } from 'firebase/database';
-import CryptoJS from 'crypto-js';
+
 import DrawerContent from '../../components/MaterialUI/SidebarModule';
-import TreatmentTable from './TreatmentTable';
+import InventoryTable from './InventoryTable';
 
-
-const SECRET_KEY = process.env.REACT_APP_AES_ENCRYPTION_KEY;
 const drawerWidth = 280;
 
-export default function TreatmentRecordPage() {
+export default function InventoryPage() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
   const [data, setData] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [patientData, setPatientData] = useState({ 
-    id: null,
-    firstName: "",
-    lastName: "",
-    middleInitial: ""
-  });
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if ('caches' in window) {
-      caches.open('PatientData').then((cache) => {
-        cache.match('PatientData').then((response) => {
-          if (response) {
-            response.text().then((encryptedText) => {
-              try {
-                const bytes = CryptoJS.AES.decrypt(encryptedText, SECRET_KEY);
-                const decryptedData = bytes.toString(CryptoJS.enc.Utf8);
-                if (!decryptedData) {
-                  console.error('Failed to decrypt data.');
-                  return;
-                }
-                const parsedData = JSON.parse(decryptedData);
-                setPatientData(parsedData);
-              } catch (err) {
-                console.error('Decryption or parsing error:', err);
-              }
-            });
-          }
-        });
-      });
-    }
-  }, []);
-
-  useEffect(() => {
-    const itemsRef = ref(database, 'TreatmentRecords/');
+    const itemsRef = ref(database, 'Inventory/');
     onValue(itemsRef, (snapshot) => {
       const data = snapshot.val();
       const loadedItems = data
@@ -90,42 +57,40 @@ export default function TreatmentRecordPage() {
     setIsClosing(false);
   };
 
-  const handleCloseRecord = useCallback((e) => {
-    e.preventDefault();
-    navigate('/patient');
+
+
+  const handleSignOut =() => {
+      signOut(auth).then(() => {
+          // Sign-out successful.
+          console.log("Sign out successful")
+        }).catch((error) => {
+          // An error happened.
+        });;
+  };
+
+
+
+  const handleAddItemCategory = useCallback((e) => {
+    e.preventDefault()
+    navigate('/inventory/additemcategory');
   }, [navigate]);
 
-    const handleSignOut =() => {
-        signOut(auth).then(() => {
-            // Sign-out successful.
-            console.log("Sign out successful")
-          }).catch((error) => {
-            // An error happened.
-          });;
-    };
+  const handleDeleteItemCategory = useCallback((e) => {
+    e.preventDefault()
+    navigate('/inventory/deleteitemcategory');
+  }, [navigate]);
 
-  const cacheTreatmentRecord = useCallback((id) => {
-    try {
-      const stringifiedData = JSON.stringify(id);
-      const encrypted = CryptoJS.AES.encrypt(stringifiedData, SECRET_KEY).toString();
-
-      if ('caches' in window) {
-        caches.open('AddRecordCache').then((cache) => {
-          cache.put('AddRecordCache', new Response(encrypted));
-        });
-      }
-    } catch (err) {
-      console.error('❌ Error encrypting or caching AddRecord:', err);
-    }
-  }, []);
-
-  const handleAddTR = useCallback((e, id) => {
+  const handleAddInventory = useCallback((e) => {
     e.preventDefault();
-    cacheTreatmentRecord(id);
-    navigate('/patient/treatment/add');
-  }, [navigate, cacheTreatmentRecord]);
+    navigate("/inventory/addinventory");
+  }, [navigate]);
 
-  const keys = ['date'];
+  //Search Controls
+  const keys = ['itemName',
+    "supplierName",
+    "itemCategory",
+    "branchName",
+    "dateBought"];
   const handleSearchQuery = (data) => {
     return data?.filter((record) =>
       keys.some((key) =>
@@ -162,16 +127,16 @@ export default function TreatmentRecordPage() {
             noWrap
             component="div"
             className="text-slate-50"
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+            sx={{ flexGrow: 1 }}
           >
-            Treatment Records
+            Inventory Management
           </Typography>
           <Button
-            onClick={handleCloseRecord}
-            className="text-slate-50 hover:text-slate-700"
-            
+            onClick={handleDeleteItemCategory}
+            className="text-slate-50 hover:text-slate-700 "
+            sx={{display: { xs: 'none', sm: 'block' }}}
           >
-            ⬅ Back to Patient Directory
+            Delete Item Category
           </Button>
           <Divider
             orientation="vertical"
@@ -184,7 +149,27 @@ export default function TreatmentRecordPage() {
               my: 'auto'
             }}
           />
-           <Button onClick={handleSignOut} className='text-slate-50 hover:text-red-700' sx={{ display: { xs: 'none', sm: 'block' }}} >Log Out</Button>
+          <Button
+            onClick={handleAddItemCategory}
+            className="text-slate-50 hover:text-slate-700 "
+            sx={{display: { xs: 'none', sm: 'block' }}}
+          >
+            Add Item Category
+          </Button>
+          <Divider
+            orientation="vertical"
+            flexItem
+            sx={{
+              display: { xs: 'none', sm: 'block' },
+              height: 28,
+              mx: 2,
+              bgcolor: 'white',
+              my: 'auto'
+            }}
+          />
+           <Button onClick={handleSignOut} className='text-slate-50 hover:text-red-700' >
+            Log Out
+          </Button>
         </Toolbar>
       </AppBar>
 
@@ -234,23 +219,25 @@ export default function TreatmentRecordPage() {
         <Toolbar />
         <div className="flex flex-wrap justify-between items-center gap-4 mb-4 px-4">
           <div  className="flex items-baseline gap-4 flex-wrap">
-            <h4 className="lg:text-3xl text-xl font-semibold database-title ">TREATMENT RECORDS: </h4>
+            <h4 className="lg:text-3xl text-xl font-semibold database-title ">INVENTORY: </h4>
             <form className="flex items-center bg-slate-300 p-1 rounded-md md:w-80">
               <SearchIcon className="text-gray-600 ml-2 mr-1" />
               <input
                 type="text"
-                placeholder="Search by Date"
+                placeholder="Search"
                 className="bg-slate-300 placeholder-gray-600 outline-none w-full p-1"
                 onChange={(e) => setSearchQuery(e.target.value)}
               />
             </form>
           </div>
-          <button
-            onClick={(e) => handleAddTR(e, patientData.id)}
-            className="open-add-form-btn mt-3"
-          >
-            ADD NEW RECORD
-          </button>
+          <div style={{ display: 'flex', flexWrap: 'nowrap', gap: '1rem' }}>
+            <button
+              onClick={handleAddInventory}
+              className="open-add-form-btn mt-3"
+            >
+              ADD ITEM
+            </button>
+          </div>
         </div>
 
         {isLoading ? (
@@ -258,7 +245,9 @@ export default function TreatmentRecordPage() {
             <CircularProgress />
           </div>
         ) : (
-          <TreatmentTable data={handleSearchQuery(data)} patientData={patientData} />
+          <div>
+            <InventoryTable data={handleSearchQuery(data)} />
+          </div>
         )}
       </Box>
     </Box>

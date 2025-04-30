@@ -4,21 +4,8 @@ body {
   margin: 0;
   height: 100vh;
 }
-.record-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 80vh;
-}
 
-.record-container form {
-  padding: 1rem;
-  border: #333 solid 1px;
-  margin: 0 auto;
-  border-radius: 3px;
-  width: 40rem;
-}
-.align-center-container {
+.align-left-container {
   display: flex;
   height: 100vh;
   background-image: url("/src/components/img/login-bg.jpg");

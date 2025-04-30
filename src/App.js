@@ -7,7 +7,7 @@ import { useAuth } from "./components/authContext";
 import LoginForm from "./pages/loginform";
 import Dashboard from "./pages/Dashboard";
 
-import InventoryMain from "./pages/InventoryDB/InventoryMain";
+import InventoryPage from "./pages/InventoryDB/InventoryPage";
 
 import PatientPage from "./pages/PatientFiles/PatientPage";
 import AddPatientForm from "./pages/PatientFiles/AddPatientForm";
@@ -16,6 +16,14 @@ import EditPatientForm from "./pages/PatientFiles/EditPatientForm";
 import TreatmentRecordPage from "./pages/TreatmentFiles/TreatmentRecordPage";
 import AddTreatmentRecord from "./pages/TreatmentFiles/addTreatmentrecord";
 import EditTreatmentRecord from "./pages/TreatmentFiles/editTreatmentRecord";
+import AddItemCategory from "./pages/InventoryDB/AddItemCategory";
+import AddInventoryForm from "./pages/InventoryDB/AddInventoryForm";
+import AddBranch from "./pages/AddBranch";
+import DeleteCategoryForm from "./pages/InventoryDB/DeleteCategoryForm";
+import EditInventoryForm from "./pages/InventoryDB/EditInventoryForm";
+import AddInventoryTransactionsForm from "./pages/InventoryTransactionsDB/AddInventoryTransactions";
+import InventoryTransactionsPage from "./pages/InventoryTransactionsDB/InventoryTransactionsPage";
+import AddEmployeeForm from "./pages/EmployeeFiles/AddEmployeeForm";
 
 function App() {
   //imports global var currentUser
@@ -78,7 +86,7 @@ function App() {
           }
         />
         <Route
-          path="/addtreatmentrecord"
+          path="/patient/treatment/add"
           element={
             <AuthCheck>
               <AddTreatmentRecord />
@@ -86,7 +94,7 @@ function App() {
           }
         />
         <Route
-          path="/edittreatmentrecord"
+          path="/patient/treatment/edit"
           element={
             <AuthCheck>
               <EditTreatmentRecord />
@@ -97,7 +105,72 @@ function App() {
           path="/inventory"
           element={
             <AuthCheck>
-              <InventoryMain />
+              <InventoryPage />
+            </AuthCheck>
+          }
+        />
+        <Route
+          path="/inventory/additemcategory"
+          element={
+            <AuthCheck>
+              <AddItemCategory />
+            </AuthCheck>
+          }
+        />
+        <Route
+          path="/inventory/deleteitemcategory"
+          element={
+            <AuthCheck>
+              <DeleteCategoryForm />
+            </AuthCheck>
+          }
+        />
+        <Route
+          path="/inventory/addinventory"
+          element={
+            <AuthCheck>
+              <AddInventoryForm />
+            </AuthCheck>
+          }
+        />
+        <Route
+          path="/inventory/editinventory"
+          element={
+            <AuthCheck>
+              <EditInventoryForm />
+            </AuthCheck>
+          }
+        />
+        <Route
+          path="/inventory/transactions/add"
+          element={
+            <AuthCheck>
+              <AddInventoryTransactionsForm />
+            </AuthCheck>
+          }
+        />
+        <Route
+          path="/inventory/transactions"
+          element={
+            <AuthCheck>
+              <InventoryTransactionsPage />
+            </AuthCheck>
+          }
+        />
+        <Route path="/employees" element={<AuthCheck>{/*Empty*/}</AuthCheck>} />
+        <Route
+          path="/employees/add"
+          element={
+            <AuthCheck>
+              <AddEmployeeForm />
+            </AuthCheck>
+          }
+        />
+        <Route
+          path="/addbranch"
+          element={
+            <AuthCheck>
+              <AddBranch />
             </AuthCheck>
           }
         />

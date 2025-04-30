@@ -31,7 +31,7 @@ export default function LoginForm() {
 
   return (
     <>
-      <div className="align-center-container ">
+      <div className="align-left-container ">
         <form className="form lg:w-[37.5%] w-[100%]" onSubmit={handleLogin}>
           <label
             className="mb-10 text-center
@@ -75,6 +75,7 @@ export default function LoginForm() {
           </button>
         </form>
       </div>
+      <style></style>
     </>
   );
 }

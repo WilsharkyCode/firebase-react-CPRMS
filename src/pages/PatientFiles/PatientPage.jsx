@@ -133,10 +133,10 @@ export default function PatientPage() {
           </IconButton>
           {/*Change with dynamic text next time*/}
           
-          <Typography variant="h6" className='text-slate-50' noWrap component="div" sx={{ flexGrow:1, display: { xs: 'none', sm: 'block' }}}>
+          <Typography variant="h6" className='text-slate-50' noWrap component="div" sx={{ flexGrow:1, }}>
             Patient Management
           </Typography>
-          <Button onClick={handleSignOut} className='text-slate-50 hover:text-red-700' sx={{ display: { xs: 'none', sm: 'block' }}} >Log Out</Button>
+          <Button onClick={handleSignOut} className='text-slate-50 hover:text-red-700' >Log Out</Button>
         </Toolbar>
       </AppBar>
       <Box
@@ -173,41 +173,38 @@ export default function PatientPage() {
           {drawer}
         </Drawer>
       </Box>
+      {/*Main Content Start===============================================================*/}
       <Box
         component="main"
         className='bg-slate-100 overflow-y-auto h-dvh'
         sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` }}}
       >
         <Toolbar />
-        {/*Main Content Start===============================================================*/}
-        <div >
-          <Toolbar className="flex items-baseline justify-between w-full flex-wrap gap-4 px-4">
+          <div className="flex flex-wrap justify-between items-center gap-4 mb-4 px-4 ">
             <div className="flex items-baseline gap-4 flex-wrap">
-              <h4 className="lg:text-3xl text-xl font-semibold database-title ">
+              <h4 className="lg:text-3xl text-xl font-semibold database-title">
                 PATIENT DIRECTORY:
               </h4>
-              <form className="flex items-center bg-slate-300 p-1 rounded-md md:w-80 ">
+              <form className="flex items-center bg-slate-300 p-1 rounded-md md:w-80">
                 <SearchIcon className="text-gray-600 ml-2 mr-1" />
                 <input
                   type="text"
-                  placeholder="Search Name"
+                  placeholder="Search By Name"
                   className="bg-slate-300 placeholder-gray-600 outline-none w-full p-1"
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </form>
             </div>
-            <button
-              onClick={() => Nav("/patient/add")}
-              className="open-add-form-btn"
-            >
-              ADD NEW PATIENT
-            </button>
-          </Toolbar>
-          <Toolbar sx={{
-              display: { xs: 'block', sm: 'none' }}}/>
-
+            <div className="flex flex-nowrap gap-4">
+              <button
+                onClick={() => Nav("/patient/add")}
+                className="open-add-form-btn mt-3"
+              >
+                ADD NEW PATIENT
+              </button>
+            </div>
+          </div>
           {/*Sends data from firebase and setSearchQuery to Table*/}
-          <div>
           {isLoading ? (
             <div className="flex justify-center items-center py-10">
               <CircularProgress />
@@ -215,10 +212,9 @@ export default function PatientPage() {
           ) : (
             <PatientTable data={handleSearchQuery(data)} dataRecords={dataRecords} />
           )}
-          </div>
-        </div>
-        {/*Main Content End=================================================================*/}
+        
       </Box>
+      {/*Main Content End=================================================================*/}
     </Box>
   );
 }

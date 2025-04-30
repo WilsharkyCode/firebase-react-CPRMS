@@ -77,16 +77,15 @@
   }
 
   .open-add-form-btn {
-    @apply lg:float-right;
     @apply text-white;
     @apply rounded-md;
     @apply text-center;
     @apply bg-pastelpurple;
     @apply hover:bg-violet-800;
-    @apply md:mb-4;
-    @apply mt-0;
+    @apply mb-4;
     @apply px-4;
     @apply py-2;
+    @apply font-semibold;
   }
 
   .page-container {

@@ -1,7 +1,6 @@
 import React, { useCallback, useState, useMemo } from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
-import CryptoJS from "crypto-js";
 import {
   Box,
   Paper,
@@ -13,19 +12,27 @@ import {
   TablePagination,
   TableRow,
   TableSortLabel,
-  IconButton,
   Tooltip,
-  Toolbar,
+  IconButton,
   Typography,
+  Toolbar,
 } from "@mui/material";
 import { visuallyHidden } from "@mui/utils";
 import { ref, remove } from "firebase/database";
 import { database } from "../../config/firebase-config";
+import CryptoJS from "crypto-js";
 import EditIcon from "../../components/Icons/edit-icon-white.png";
 import TrashIcon from "../../components/Icons/trash-icon-white.png";
-import BasicModal from "../../components/MaterialUI/MaterialModal";
 
 const SECRET_KEY = process.env.REACT_APP_AES_ENCRYPTION_KEY;
+
+const headCells = [
+  { id: "id", label: "Transaction ID" },
+  { id: "transactionDate", label: "Date" },
+  { id: "transactionType", label: "Type" },
+  { id: "quantity", label: "Quantity" },
+  { id: "actions", label: "Actions" },
+];
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) return -1;
@@ -38,14 +45,6 @@ function getComparator(order, orderBy) {
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
 }
-
-const headCells = [
-  { id: "date", label: "Date" },
-  { id: "procedure", label: "Procedure" },
-  { id: "amountPaid", label: "Amount Paid" },
-  { id: "balance", label: "Balance" },
-  { id: "actions", label: "Actions" },
-];
 
 function EnhancedTableHead({ order, orderBy, onRequestSort }) {
   const createSortHandler = (property) => (event) => {
@@ -67,13 +66,11 @@ function EnhancedTableHead({ order, orderBy, onRequestSort }) {
                 onClick={createSortHandler(headCell.id)}
               >
                 {headCell.label}
-                {orderBy === headCell.id ? (
+                {orderBy === headCell.id && (
                   <Box component="span" sx={visuallyHidden}>
-                    {order === "desc"
-                      ? "sorted descending"
-                      : "sorted ascending"}
+                    {order === "desc" ? "sorted descending" : "sorted ascending"}
                   </Box>
-                ) : null}
+                )}
               </TableSortLabel>
             ) : (
               headCell.label
@@ -91,19 +88,18 @@ EnhancedTableHead.propTypes = {
   orderBy: PropTypes.string.isRequired,
 };
 
-//MAIN FUNCTION START
-export default function TreatmentTable({ data, patientData }) {
+export default function InventoryTransactionsTable({ data, itemData }) {
   const filteredData = useMemo(
     () =>
       data.filter(
         (record) =>
-          record.patientID && record.patientID.toString().includes(patientData.id)
+          record.itemID && record.itemID.toString().includes(itemData.id)
       ),
-    [data, patientData]
+    [data, itemData]
   );
 
   const [order, setOrder] = useState("asc");
-  const [orderBy, setOrderBy] = useState("date");
+  const [orderBy, setOrderBy] = useState("transactionDate");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const navigate = useNavigate();
@@ -123,13 +119,13 @@ export default function TreatmentTable({ data, patientData }) {
     setPage(0);
   };
 
-  const deleteRecords = useCallback((id) => {
-    remove(ref(database, "TreatmentRecords/" + id));
-    console.log("Delete Success");
+  const deleteRecord = useCallback((id) => {
+    remove(ref(database, `InventoryTransactions/${id}`));
+    console.log("Deleted transaction with ID:", id);
   }, []);
 
-  const cacheData = useCallback((key, treatmentData) => {
-    const jsonString = JSON.stringify(treatmentData);
+  const cacheData = useCallback((key, data) => {
+    const jsonString = JSON.stringify(data);
     const encrypted = CryptoJS.AES.encrypt(jsonString, SECRET_KEY).toString();
     if ("caches" in window) {
       caches.open(key).then((cache) => {
@@ -142,8 +138,8 @@ export default function TreatmentTable({ data, patientData }) {
   const startEditing = useCallback(
     (e, record) => {
       e.preventDefault();
-      cacheData("TreatmentRecordData", record);
-      navigate("/patient/treatment/edit");
+      cacheData("InventoryTransactionData", record);
+      navigate("/inventory/transaction/edit");
     },
     [navigate, cacheData]
   );
@@ -161,9 +157,11 @@ export default function TreatmentTable({ data, patientData }) {
 
   return (
     <Box sx={{ width: "100%" }}>
-      <Paper sx={{ width: "100%", mb: 2,borderRadius: 4}}>
+      <Paper sx={{ width: "100%", mb: 2, borderRadius: 4 }}>
         <Toolbar>
-          <Typography className="font-semibold text-slate-500">PATIENT NAME: {patientData.firstName} {patientData.middleName} {patientData.lastName}</Typography>
+          <Typography className="font-semibold text-slate-500">
+            TRANSACTIONS FOR ITEM: {itemData.itemName}
+          </Typography>
         </Toolbar>
         <TableContainer>
           <Table size="medium">
@@ -175,22 +173,17 @@ export default function TreatmentTable({ data, patientData }) {
             <TableBody>
               {paginatedData.map((record) => (
                 <TableRow key={record.id} hover>
-                  <TableCell>{record.date}</TableCell>
-                  <TableCell sx={{ minWidth: 250, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                    {record.procedure}
-                  </TableCell>
-                  <TableCell>{record.amountPaid}</TableCell>
-                  <TableCell>{record.balance}</TableCell>
+                  <TableCell>{record.id}</TableCell>
+                  <TableCell>{record.transactionDate}</TableCell>
+                  <TableCell>{record.transactionType}</TableCell>
+                  <TableCell>{record.quantity}</TableCell>
                   <TableCell align="right">
                     <Box sx={{ display: "flex", gap: 1 }}>
-                      <BasicModal
-                        ButtonName={"VIEW PROCEDURE"}
-                        Header={"PROCEDURE DETAILS:"}
-                        Body={record.procedure}
-                      />
-                      <Tooltip title="Edit" arrow>
+                      {/*
+                                            <Tooltip title="Edit" arrow>
                         <IconButton
                           className="icons-btn bg-emerald-400 hover:bg-emerald-500"
+                          disabled
                           onClick={(e) => startEditing(e, record)}
                         >
                           <img
@@ -201,10 +194,12 @@ export default function TreatmentTable({ data, patientData }) {
                           />
                         </IconButton>
                       </Tooltip>
+                      */}
+
                       <Tooltip title="Delete" arrow>
                         <IconButton
                           className="icons-btn bg-red-400 hover:bg-red-500"
-                          onClick={() => deleteRecords(record.id)}
+                          onClick={() => deleteRecord(record.id)}
                         >
                           <img
                             src={TrashIcon}
